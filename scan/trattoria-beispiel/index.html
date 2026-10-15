@@ -14,6 +14,20 @@
 <link rel="stylesheet" href="../assets/css/components.css">
 <link rel="stylesheet" href="../assets/css/entwurf.css">
 <link rel="stylesheet" href="../assets/css/restaurant.css">
+<style>
+/* Kompakter Wirth-Hinweis vor dem Fuß (.rw-mini): 3 Schritte, Testphase, Preis, Kundenstimme. Inline, restaurant.css bleibt unberührt. */
+.rw-mini{padding-block:1.75rem;border-top:1px solid color-mix(in srgb,var(--e-ink) 12%,transparent);text-align:center;font-size:.875rem;line-height:1.4;color:var(--e-ink2)}
+.rw-mini-steps{display:flex;justify-content:center;gap:clamp(.5rem,.2rem + 1.5vw,1.5rem);margin:0;padding:0;list-style:none}
+.rw-mini-steps li{display:flex;flex-direction:column;align-items:center;gap:.375rem;flex:0 1 7.5rem;min-width:0;font:500 .8125rem/1.25 var(--sans);color:var(--e-ink)}
+.rw-mini-ico{position:relative;display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:50%;background:color-mix(in srgb,var(--e-acc) 14%,transparent);color:var(--e-ink)}
+.rw-mini-ico svg{width:1.125rem;height:1.125rem}
+.rw-mini-ico b{position:absolute;top:-.25rem;right:-.375rem;display:grid;place-items:center;width:1.0625rem;height:1.0625rem;border-radius:50%;background:var(--e-acc);color:var(--e-acc-ink);font:700 .625rem/1 var(--sans)}
+.rw-mini-badge{display:inline-block;margin:1rem 0 0;padding:.25rem .75rem;border-radius:999px;background:color-mix(in srgb,#25d366 16%,transparent);color:var(--e-ink);font:600 .8125rem/1.3 var(--sans)}
+.rw-mini-price{margin:.5rem auto 0;text-wrap:balance;color:var(--e-ink)}
+.rw-mini-quote{display:flex;align-items:center;justify-content:center;gap:.625rem;margin:.75rem auto 0;max-width:30rem;text-align:left}
+.rw-mini-quote img{flex:none;width:2.25rem;height:2.25rem;border-radius:50%;object-fit:cover;object-position:50% 25%}
+.rw-mini-quote p{margin:0;font-style:italic}
+</style>
 <style>:root{--e-bg:#faf6ef;--e-ink:#24190f;--e-ink2:#5d4f43;--e-acc:#9c2f22;--e-acc-ink:#ffffff;--e-band:#f1e7d7}</style>
 <!-- Scan-Animation nur mit JS; lädt restaurant.js nicht, verschwindet sie nach spätestens 6 s (fail-open). -->
 <script>document.documentElement.classList.add("rw-scanning");setTimeout(function(){document.documentElement.classList.remove("rw-scanning")},6000)</script>
@@ -121,6 +135,17 @@
     </div>
   </section>
 </main>
+
+<aside class="e-wrap rw-mini" aria-label="Diese Website von Wirth Websites">
+  <ol class="rw-mini-steps">
+    <li title="Schreiben Sie uns per WhatsApp"><span class="rw-mini-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18.5 5.2 15A7.5 7.5 0 1 1 8.6 18l-4.6.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b aria-hidden="true">1</b></span>Per WhatsApp schreiben</li>
+    <li title="Änderungen einfach per Nachricht"><span class="rw-mini-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 5.5 18.5 9.5M4.5 19.5l1-4.2L15.8 5a1.4 1.4 0 0 1 2 0l1.2 1.2a1.4 1.4 0 0 1 0 2L8.7 18.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg><b aria-hidden="true">2</b></span>Änderungen per Nachricht</li>
+    <li title="Fertig – Ihre Seite ist online"><span class="rw-mini-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b aria-hidden="true">3</b></span>Fertig – online</li>
+  </ol>
+  <p class="rw-mini-badge">2 Tage kostenlos testen</p>
+  <p class="rw-mini-price">150 € einmalig + 49,99 €/Monat · monatlich kündbar</p>
+  <div class="rw-mini-quote"><img src="../assets/img/alexander-wirth-160.jpg" width="160" height="160" alt="Alexander Wirth" loading="lazy" decoding="async"><p>„Schnell, unkompliziert und endlich professionell.“ – Liane</p></div>
+</aside>
 
 <footer class="e-foot">
   <div class="e-wrap e-foot-grid">
