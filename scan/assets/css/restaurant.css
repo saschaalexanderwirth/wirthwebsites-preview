@@ -1,0 +1,76 @@
+/* Variante »restaurant-whatsapp« (scan/<slug>/index.html). Quelle: scan/assets/css/restaurant.css (von Hand gepflegt).
+   Baut auf tokens.css + components.css + entwurf.css auf: Restaurant-Website im Entwurfs-Layout »hell«, dazu
+   Scan-Animation, Speisekarte, »Über uns« von Wirth Websites und der feste WhatsApp-Knopf (.rw-dock). */
+
+/* Platz für den festen Knopf unten (er bleibt die ganze Zeit sichtbar): im letzten Abschnitt, damit kein heller Streifen bleibt */
+.rw .e-toast { bottom: calc(8.75rem + env(safe-area-inset-bottom)); }
+
+/* Leiste oben: gehört zu Wirth Websites, nicht zur Restaurant-Website */
+.rw-strip { flex-wrap: nowrap; }
+.rw-strip p { min-width: 0; }
+.rw-strip-logo { flex: none; display: flex; align-items: center; width: 6.25rem; min-height: 2.75rem; color: var(--creme); }
+.rw-strip-logo svg { width: 100%; height: auto; }
+
+/* Speisekarte: Gruppen fließen, nie feste Spaltenzahl auf dem Handy */
+.rw-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: clamp(1.5rem, 1rem + 2vw, 3rem); }
+.rw-menu h3 { padding-bottom: .625rem; border-bottom: 2px solid var(--e-acc); font: 400 1.625rem/1.2 var(--serif); letter-spacing: -.01em; }
+.rw-menu ul { margin: 0; padding: 0; list-style: none; }
+.rw-menu li { padding: .875rem 0; border-bottom: 1px solid color-mix(in srgb, var(--e-ink) 12%, transparent); }
+.rw-menu b { display: block; font: 500 1.0625rem/1.35 var(--sans); }
+.rw-menu span { display: block; margin-top: .125rem; font-size: 1rem; color: var(--e-ink2); }
+
+/* Öffnungszeiten-Kasten im Kontakt */
+.rw-hours { align-self: start; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem); border-radius: 1.25rem; background: color-mix(in srgb, var(--e-bg) 70%, #fff); box-shadow: 0 0 0 1px color-mix(in srgb, var(--e-ink) 10%, transparent), 0 30px 60px -40px rgba(0, 0, 0, .4); }
+.rw-hours h3 { font: 400 1.625rem/1.2 var(--serif); }
+.rw-hours .e-data { margin-top: 1rem; }
+.rw-hours .e-btn { width: 100%; margin-top: 1.5rem; }
+
+/* ── Über uns (Wirth Websites) ─────────────────────────────────────────── */
+.rw-wirth { position: relative; isolation: isolate; overflow: hidden; padding: clamp(3.5rem, 2.5rem + 4vw, 6rem) var(--gut) calc(clamp(3.5rem, 2.5rem + 4vw, 6rem) + 8.25rem + env(safe-area-inset-bottom)); background: var(--night); color: var(--on-night); text-align: center; }
+.rw-wirth::before { content: ""; position: absolute; z-index: -1; left: -30%; right: -30%; top: -8rem; height: 28rem; background: radial-gradient(closest-side, rgba(243, 239, 230, .12), transparent); }
+.rw-wirth-in { max-width: 34rem; margin: 0 auto; }
+.rw-wirth-logo { display: flex; align-items: center; width: 8.5rem; min-height: 2.75rem; margin: 0 auto 2rem; color: var(--creme); }
+.rw-wirth-logo svg { width: 100%; height: auto; }
+.rw-wirth .eyebrow { justify-content: center; color: var(--on-night-2); }
+.rw-wirth h2 { margin: 0; font: 300 clamp(1.875rem, 1.4rem + 2.4vw, 2.75rem)/1.12 var(--serif); letter-spacing: -.02em; color: var(--creme); }
+.rw-wirth-lead { margin: 1rem auto 0; color: var(--on-night-2); }
+.rw-team { display: flex; justify-content: center; margin: 2rem 0 0; padding: 0; list-style: none; }
+.rw-team li + li { margin-left: -.75rem; }
+.rw-team .av, .rw-team .ini { width: 4rem; height: 4rem; }
+.rw-team-name { margin: .75rem auto 0; text-wrap: balance; color: var(--on-night-2); }
+.rw-wirth blockquote { margin: 1.5rem 0 0; font: italic 400 1.1875rem/1.5 var(--serif); color: var(--on-night); }
+.rw-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 1.25rem; margin-top: 2rem; }
+.rw-links a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--on-night-3); text-decoration: none; }
+.rw-links a:hover { color: var(--creme); }
+
+/* ── Fester WhatsApp-Knopf: immer sichtbar, auch während der Scan-Animation ── */
+.rw-dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: grid; justify-items: center; gap: .375rem; padding: .625rem .75rem calc(.5rem + env(safe-area-inset-bottom)); background: rgba(8, 10, 20, .94); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 -1px 0 var(--line-night), 0 -10px 30px -12px rgba(8, 10, 20, .45); }
+.rw-wa { width: 100%; max-width: 26rem; gap: .5rem; padding-inline: .75rem; font-size: clamp(1rem, 4.2vw, 1.125rem); font-weight: 600; white-space: nowrap; }
+.rw-wa-ico { width: 1.5rem; height: 1.5rem; color: #128c4a; }
+.rw-dock-note { margin: 0; max-width: 36rem; text-wrap: balance; font-size: 1rem; line-height: 1.3; text-align: center; color: var(--on-night-2); }
+
+/* ── Scan-Animation: nur mit JS (html.rw-scanning), danach ist die Website frei ── */
+.rw-scan { display: none; }
+.rw-scanning body { overflow: hidden; }
+.rw-scanning .rw-scan, .rw-scan.is-done { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 1.5rem 1.5rem calc(9rem + env(safe-area-inset-bottom)); background: var(--night); color: var(--on-night); cursor: pointer; }
+.rw-scan.is-done { opacity: 0; transform: scale(1.02); transition: opacity .5s var(--ease-out), transform .5s var(--ease-out); pointer-events: none; }
+.rw-scan-in { display: grid; justify-items: center; gap: 1.25rem; text-align: center; }
+.rw-scan-logo { display: block; width: 7.5rem; color: var(--creme); }
+.rw-scan-logo svg { width: 100%; height: auto; }
+.rw-scan-phone { position: relative; overflow: hidden; display: grid; align-content: start; gap: .625rem; width: 9.5rem; height: 15rem; padding: 1.75rem .875rem; border-radius: 1.5rem; background: var(--night-3); box-shadow: inset 0 0 0 1.5px var(--edge-night), var(--shadow-deep); }
+.rw-l, .rw-b { display: block; height: .5rem; border-radius: 999px; background: var(--line-night); }
+.rw-l1 { width: 55%; } .rw-l2 { width: 90%; height: .875rem; } .rw-l3 { width: 75%; }
+.rw-b { height: 4rem; border-radius: .5rem; margin-block: .25rem; }
+.rw-l4 { width: 85%; } .rw-l5 { width: 60%; }
+.rw-scan-line { position: absolute; left: 0; right: 0; top: 0; height: 3rem; background: linear-gradient(180deg, transparent, rgba(243, 239, 230, .28) 85%, var(--creme)); transform: translateY(-3rem); animation: rw-scan 1.1s var(--ease-out) infinite; }
+@keyframes rw-scan { to { transform: translateY(15rem); } }
+.rw-scan-for { margin: 0; font: 300 clamp(1.375rem, 1.1rem + 1.4vw, 1.75rem)/1.2 var(--serif); }
+.rw-scan-for b { display: block; font-weight: 400; color: var(--creme); }
+.rw-scan-steps { display: grid; gap: .375rem; margin: 0; padding: 0; list-style: none; color: var(--on-night-2); }
+.rw-scan-steps li { opacity: .35; transition: opacity .3s, color .3s; }
+.rw-scan-steps li::before { content: "○"; display: inline-block; width: 1.5rem; }
+.rw-scan-steps li.on { opacity: 1; color: var(--on-night); }
+.rw-scan-steps li.on::before { content: "✓"; color: var(--creme); }
+.rw-scan-skip { position: absolute; top: max(.75rem, env(safe-area-inset-top)); right: .75rem; min-height: 2.75rem; padding: 0 1rem; border: 0; border-radius: 999px; background: transparent; color: var(--on-night-3); font: 400 1rem/1 var(--sans); cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .rw-scan-line { animation: none; transform: none; height: 100%; background: rgba(243, 239, 230, .06); } }
+.rw .e-data dd a { display: inline-flex; align-items: center; min-height: 2.75rem; margin-block: -.75rem; }
