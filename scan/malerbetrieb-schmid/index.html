@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#080a14">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/newsreader-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/general-sans-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" type="image/webp" href="img/neu-1-m.webp" media="(max-width: 55.99rem)">
 <link rel="stylesheet" href="../assets/css/tokens.css">
 <link rel="stylesheet" href="../assets/css/components.css">
@@ -29,7 +30,7 @@
 
 <header class="intro" id="top">
   <div class="intro-txt">
-    <div class="sender"><picture><source type="image/webp" srcset="../assets/img/alexander-wirth-400.webp"><img src="../assets/img/alexander-wirth-400.jpg" width="72" height="72" alt="Foto von Alexander Wirth"></picture><div>Alexander Wirth<span>Wirth Websites, Heidelberg</span></div></div>
+    <div class="sender"><picture><source type="image/webp" srcset="../assets/img/alexander-wirth-160.webp 160w, ../assets/img/alexander-wirth-400.webp 400w" sizes="36px"><img src="../assets/img/alexander-wirth-160.jpg" srcset="../assets/img/alexander-wirth-160.jpg 160w, ../assets/img/alexander-wirth-400.jpg 400w" sizes="36px" width="72" height="72" alt="Foto von Alexander Wirth"></picture><div>Alexander Wirth<span>Wirth Websites, Heidelberg</span></div></div>
     <p class="for">Persönlich für <span translate="no">Malerbetrieb Schmid</span></p>
     <h1 class="hl">So könnte Ihr Malerbetrieb online aussehen.</h1>
     <p class="intro-lead">Ich habe Ihnen zwei Entwürfe gebaut – echte Seiten zum Durchklicken, auf dem Handy und am Computer.</p>
@@ -40,8 +41,8 @@
     <p class="intro-alt">Unverbindlich. Lieber schreiben? <a href="mailto:info@wirthwebsites.de?subject=Entw%C3%BCrfe%20f%C3%BCr%20Malerbetrieb%20Schmid&amp;body=Guten%20Tag%20Herr%20Wirth%2C%0A%0Aich%20habe%20die%20Entw%C3%BCrfe%20f%C3%BCr%20Malerbetrieb%20Schmid%20gesehen%20und%20w%C3%BCrde%20sie%20gern%20besprechen.%0APassender%20Termin%3A%20%0ATelefon%3A%20%0A">E-Mail an Alexander</a></p>
   </div>
   <a class="show" href="entwurf-1/" aria-label="Entwurf 1 für Malerbetrieb Schmid öffnen">
-    <span class="show-desk" aria-hidden="true"><span class="bar"><i></i><i></i><i></i></span><img src="img/neu-1-d.webp" width="1440" height="900" alt="" loading="lazy"></span>
-    <span class="show-phone"><picture><source type="image/webp" srcset="img/neu-1-m.webp"><img src="img/neu-1-m.jpg" width="390" height="844" alt="Startseite von Entwurf 1 für Malerbetrieb Schmid auf dem Smartphone"></picture></span>
+    <span class="show-desk" aria-hidden="true"><span class="bar"><i></i><i></i><i></i></span><img src="img/neu-1-d.webp" width="1440" height="900" alt="" loading="lazy" decoding="async"></span>
+    <span class="show-phone"><picture><source type="image/webp" srcset="img/neu-1-m.webp"><img src="img/neu-1-m.jpg" width="390" height="844" alt="Startseite von Entwurf 1 für Malerbetrieb Schmid auf dem Smartphone" fetchpriority="high"></picture></span>
     <span class="show-cap">Entwurf 1 · Hell und ruhig <svg width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></span>
   </a>
 </header>
@@ -52,7 +53,7 @@
       <p class="eyebrow">Ihre Entwürfe</p>
       <h2 id="entwH">Zwei Richtungen für Malerbetrieb Schmid.</h2>
       <p class="sub">Echte Seiten statt Bildern: scrollen, Menü öffnen, Leistungen ansehen. Texte und Fotos sind Platzhalter, bis wir sie mit Ihnen abstimmen.</p>
-      <ol class="drafts"><li class="draft"><a class="draft-pic" href="entwurf-1/" tabindex="-1" aria-hidden="true"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/neu-1-d.webp"><source type="image/webp" srcset="img/neu-1-m.webp"><img src="img/neu-1-m.jpg" width="390" height="844" alt="" loading="lazy" decoding="async"></picture></a><h3>Entwurf 1 <span>· Hell und ruhig</span></h3><p>Viel Weißraum, Serifen-Überschriften, Terrakotta als Akzent – wie frisch gestrichen.</p><a class="btn btn-creme" href="entwurf-1/">Entwurf 1 öffnen<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a></li><li class="draft"><a class="draft-pic" href="entwurf-2/" tabindex="-1" aria-hidden="true"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/neu-2-d.webp"><source type="image/webp" srcset="img/neu-2-m.webp"><img src="img/neu-2-m.jpg" width="390" height="844" alt="" loading="lazy" decoding="async"></picture></a><h3>Entwurf 2 <span>· Kräftig mit Fotos</span></h3><p>Großes Bild zum Einstieg, Petrol und Ocker, klare Grotesk-Schrift.</p><a class="btn btn-ghost" href="entwurf-2/">Entwurf 2 öffnen<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a></li></ol>
+      <ol class="drafts"><li class="draft"><a class="draft-pic" href="entwurf-1/" tabindex="-1" aria-hidden="true"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/neu-1-d.webp"><source media="(min-width: 48rem)" type="image/webp" srcset="img/neu-1-m.webp"><source type="image/webp" srcset="img/neu-1-t.webp"><img src="img/neu-1-m.jpg" width="390" height="844" alt="" loading="lazy" decoding="async"></picture></a><h3>Entwurf 1 <span>· Hell und ruhig</span></h3><p>Viel Weißraum, Serifen-Überschriften, Terrakotta als Akzent – wie frisch gestrichen.</p><a class="btn btn-creme" href="entwurf-1/">Entwurf 1 öffnen<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a></li><li class="draft"><a class="draft-pic" href="entwurf-2/" tabindex="-1" aria-hidden="true"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/neu-2-d.webp"><source media="(min-width: 48rem)" type="image/webp" srcset="img/neu-2-m.webp"><source type="image/webp" srcset="img/neu-2-t.webp"><img src="img/neu-2-m.jpg" width="390" height="844" alt="" loading="lazy" decoding="async"></picture></a><h3>Entwurf 2 <span>· Kräftig mit Fotos</span></h3><p>Großes Bild zum Einstieg, Petrol und Ocker, klare Grotesk-Schrift.</p><a class="btn btn-ghost" href="entwurf-2/">Entwurf 2 öffnen<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a></li></ol>
     </div>
   </section>
 
@@ -67,11 +68,11 @@
             <button type="button" data-ba-set="0" aria-controls="ba1">Entwurf 1</button>
           </div>
           <div class="ba cmp-ba" id="ba1" data-ba data-ba-left="Heute" data-ba-right="Entwurf" style="--p:0">
-            <div class="ba-layer"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/alt-d.webp"><source type="image/webp" srcset="img/alt-m.webp"><img src="img/alt-m.jpg" width="390" height="844" alt="" loading="lazy"></picture></div>
-            <div class="ba-layer ba-new"><div class="ba-in"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/neu-1-d.webp"><source type="image/webp" srcset="img/neu-1-m.webp"><img src="img/neu-1-m.jpg" width="390" height="844" alt="" loading="lazy"></picture></div></div>
+            <div class="ba-layer"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/alt-d.webp"><source type="image/webp" srcset="img/alt-m.webp"><img src="img/alt-m.jpg" width="390" height="844" alt="" loading="lazy" decoding="async"></picture></div>
+            <div class="ba-layer ba-new"><div class="ba-in"><picture><source media="(min-width: 56rem)" type="image/webp" srcset="img/neu-1-d.webp"><source type="image/webp" srcset="img/neu-1-m.webp"><img src="img/neu-1-m.jpg" width="390" height="844" alt="" loading="lazy" decoding="async"></picture></div></div>
             <div class="ba-rail"><button class="ba-knob" type="button" role="slider" aria-label="Vergleich: heutige Website und Entwurf 1" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-describedby="baHint aendH"><svg width="20" height="12" viewBox="0 0 22 14" aria-hidden="true"><path d="M7 2 2 7l5 5M15 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
           </div>
-          <p class="hint" id="baHint">Regler nach rechts ziehen, um Ihre heutige Seite zu sehen. Mit der Tastatur: Pfeiltasten, Pos1 und Ende.</p>
+          <p class="hint" id="baHint">Regler nach rechts ziehen, um Ihre heutige Seite zu sehen.<span class="kbd"> Mit der Tastatur: Pfeiltasten, Pos1 und Ende.</span></p>
         </div>
         <div class="cmp-txt">
           <h3 id="aendH" class="vh">Die wichtigsten Unterschiede</h3>
@@ -87,20 +88,20 @@
       <h2 id="hallo">Guten Tag, Herr Schmid.</h2>
       <p>Ihre Arbeit sieht man an vielen Fassaden in der Nachbarschaft – Ihre Website zeigt davon noch wenig. Auf dem Smartphone ist sie schwer zu lesen, und die Telefonnummer steht erst im Impressum. Deshalb habe ich Ihnen zwei Entwürfe gebaut, die Sie in Ruhe durchklicken können.</p>
       <p class="story">Ich heiße Alexander Wirth und helfe Betrieben aus der Region, im Internet so gut auszusehen, wie sie arbeiten. Keine Agentur-Floskeln, keine langen Verträge – Sie haben einen festen Ansprechpartner, der sich kümmert.</p>
-      <div class="sig"><img class="av" src="../assets/img/alexander-wirth-400.jpg" width="96" height="96" alt="" loading="lazy"><div><b>Alexander Wirth</b><span>Gründer, Wirth Websites</span></div></div>
+      <div class="sig"><img class="av" src="../assets/img/alexander-wirth-160.jpg" srcset="../assets/img/alexander-wirth-160.jpg 160w, ../assets/img/alexander-wirth-400.jpg 400w" sizes="48px" width="96" height="96" alt="" loading="lazy" decoding="async"><div><b>Alexander Wirth</b><span>Gründer, Wirth Websites</span></div></div>
     </div>
   </section>
 
   <section class="end" id="gespraech" aria-labelledby="endH">
     <div class="col">
       <ul class="team" aria-label="Ihr Team bei Wirth Websites">
-        <li><img class="av" src="../assets/img/alexander-wirth-400.jpg" width="128" height="128" alt="Alexander Wirth" loading="lazy"></li>
+        <li><img class="av" src="../assets/img/alexander-wirth-160.jpg" srcset="../assets/img/alexander-wirth-160.jpg 160w, ../assets/img/alexander-wirth-400.jpg 400w" sizes="64px" width="128" height="128" alt="Alexander Wirth" loading="lazy" decoding="async"></li>
         <li><span class="ini" role="img" aria-label="Constantin Frischkorn">CF</span></li>
       </ul>
       <p class="team-name">Alexander Wirth und Constantin Frischkorn</p>
       <h2 id="endH">Ich zeige Ihnen die Entwürfe gern persönlich.</h2>
       <div class="end-actions">
-        <a class="btn btn-creme" href="tel:+4917661336077"><img class="mini" src="../assets/img/alexander-wirth-400.jpg" width="64" height="64" alt=""><span>Alexander anrufen<small>+49 176 61336077</small></span></a>
+        <a class="btn btn-creme" href="tel:+4917661336077"><img class="mini" src="../assets/img/alexander-wirth-160.jpg" width="64" height="64" alt="" loading="lazy" decoding="async"><span>Alexander anrufen<small>+49 176 61336077</small></span></a>
         <a class="btn btn-link" href="mailto:info@wirthwebsites.de?subject=Entw%C3%BCrfe%20f%C3%BCr%20Malerbetrieb%20Schmid&amp;body=Guten%20Tag%20Herr%20Wirth%2C%0A%0Aich%20habe%20die%20Entw%C3%BCrfe%20f%C3%BCr%20Malerbetrieb%20Schmid%20gesehen%20und%20w%C3%BCrde%20sie%20gern%20besprechen.%0APassender%20Termin%3A%20%0ATelefon%3A%20%0A">Lieber per E-Mail: info@wirthwebsites.de</a>
       </div>
       <ul class="trust">
@@ -121,7 +122,7 @@
 </main>
 
 <div class="dock" data-dock-on-scroll>
-  <a class="btn btn-creme" href="tel:+4917661336077"><img class="mini" src="../assets/img/alexander-wirth-400.jpg" width="64" height="64" alt=""><span>Entwurf besprechen<small>+49 176 61336077</small></span></a>
+  <a class="btn btn-creme" href="tel:+4917661336077"><img class="mini" src="../assets/img/alexander-wirth-160.jpg" width="64" height="64" alt="" loading="lazy" decoding="async"><span>Entwurf besprechen<small>+49 176 61336077</small></span></a>
 </div>
 </body>
 </html>

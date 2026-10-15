@@ -11,6 +11,7 @@
 .on-paper .eyebrow, .on-paper .sec-head .eyebrow { color: var(--ink); }
 .on-paper .lead { color: var(--ink-2); }
 .on-paper + .sec::before, .sec.on-paper::before { display: none; }
+@media (max-width: 47.99rem) { .sec { padding-block: 3.5rem; } .sec-head { margin-bottom: 2rem; } }
 
 html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobil: Kopf + Sprungleiste) */
 @media (min-width: 64rem) { html { scroll-padding-top: 5.5rem; } }
@@ -26,9 +27,9 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .nav a:hover { color: var(--creme); }
 .head .btn { min-height: 2.75rem; padding: 0 1.125rem; font-size: var(--fs-sm); }
 .head .btn .num { display: none; }
-.jump { display: flex; gap: .25rem; overflow-x: auto; scrollbar-width: none; padding: 0 calc(var(--gut) - .625rem) .375rem; }
+.jump { display: flex; gap: .25rem; overflow-x: auto; scrollbar-width: none; padding: 0 calc(var(--gut) - .5rem) .375rem; }
 .jump::-webkit-scrollbar { display: none; }
-.jump a { flex: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 .625rem; font-size: var(--fs-sm); color: var(--on-night-2); text-decoration: none; white-space: nowrap; }
+.jump a { flex: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 .5rem; font-size: var(--fs-sm); color: var(--on-night-2); text-decoration: none; white-space: nowrap; }
 .jump a:hover { color: var(--creme); }
 @media (min-width: 64rem) { .nav { display: block; } .jump { display: none; } }
 @media (min-width: 48rem) { .head .btn .num { display: inline; } .head .btn .lbl { display: none; } }
@@ -70,21 +71,10 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .umbau .sec-head p { margin-inline: auto; }
 .umbau .cmp-txt h3#aendH { margin-bottom: 1rem; font: 400 var(--fs-h3)/1.2 var(--serif); }
 .umbau .note { margin: .75rem 0 0; font-size: var(--fs-xs); color: var(--on-night-3); }
-.sectors { max-width: 46rem; margin: clamp(3rem, 2rem + 3vw, 4.5rem) auto 0; padding-top: 1.75rem; border-top: 1px solid var(--line-night); font: 300 var(--fs-h3)/1.35 var(--serif); color: var(--on-night-2); text-align: center; }
-.sectors b { font-weight: 400; color: var(--on-night); }
-/* ── Leistungen / Ablauf ──────────────────────────────────────────────── */
+/* ── Leistungen ──────────────────────────────────────────────── */
 .two { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+.two .sec-head { margin-bottom: 0; }
 @media (min-width: 56rem) { .two { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 7vw, 7rem); align-items: start; } .two .sec-head { position: sticky; top: 7rem; } }
-.steps { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: s; }
-.steps li { counter-increment: s; position: relative; padding: 1.75rem 0 1.75rem 4.25rem; border-top: 1px solid var(--line-night); }
-.steps li::before { content: counter(s); position: absolute; left: 0; top: 1.5rem; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--edge-night); font: italic 400 1.25rem/1 var(--serif); color: var(--creme); }
-.steps h3 { font: 400 var(--fs-h3)/1.2 var(--serif); }
-.steps p { margin: .5rem 0 0; color: var(--on-night-2); }
-@media (min-width: 64rem) {
-  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; }
-  .steps li { padding: 4.5rem 0 0; border-top: 1px solid var(--line-night); }
-  .steps li::before { top: 1.25rem; }
-}
 
 /* ── Abo (Papier) ─────────────────────────────────────────────────────── */
 .abo-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: start; }
@@ -95,7 +85,7 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .price-num small { font: 400 var(--fs-body)/1.2 var(--sans); letter-spacing: 0; color: var(--ink-2); }
 .price .todo { font-size: .8125rem; vertical-align: middle; }
 .price ul { margin: 1.75rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.price li { display: flex; gap: .75rem; padding: .875rem 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.price li { display: flex; gap: .75rem; padding: .75rem 0; border-bottom: 1px solid var(--line); color: var(--ink); }
 .price li svg { flex: none; width: 1.125rem; height: 1.125rem; margin-top: .25rem; color: var(--ink); }
 .price .fine { margin: 1.25rem 0 0; font-size: var(--fs-xs); color: var(--ink-2); }
 .price .btn { width: 100%; margin-top: 1.75rem; }
@@ -104,15 +94,14 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 /* ── Team ─────────────────────────────────────────────────────────────── */
 .team { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; }
 .person { display: grid; gap: 1.5rem; align-content: start; }
-.person .arch { max-width: 24rem; }
+.person .arch { max-width: 16rem; }
+@media (min-width: 56rem) { .person .arch { max-width: 24rem; } }
 .person h3 { font: 400 clamp(1.75rem, 1.4rem + 1.4vw, 2.375rem)/1.1 var(--serif); letter-spacing: -.015em; }
 .person .role { margin: .375rem 0 0; color: var(--on-night-2); }
 .person blockquote { margin: 0; padding-left: 1.25rem; border-left: 1px solid var(--edge-night); font: italic 300 var(--fs-lead)/1.5 var(--serif); color: var(--on-night); }
-.person .tel { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; font-weight: 500; color: var(--creme); text-decoration: none; }
-.person .tel:hover { text-decoration: underline; text-underline-offset: .3em; }
 .person-sm { display: flex; align-items: center; gap: 1.25rem; padding-top: 1.75rem; border-top: 1px solid var(--line-night); }
 .person-sm .ini { width: 5.5rem; height: 5.5rem; flex: none; font-size: 1.75rem; }
-.person-sm h3 { font-size: 1.625rem; }
+.person-sm h3 { font-size: 1.625rem; line-height: 1.15; }
 .side { display: grid; gap: 2rem; align-content: start; }
 @media (min-width: 56rem) { .team { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(3rem, 7vw, 7rem); } }
 
@@ -120,7 +109,8 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .faq-wrap { max-width: 52rem; }
 .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; }
 @media (min-width: 56rem) { .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(3rem, 7vw, 7rem); } }
-.big-tel { display: inline-block; padding-bottom: .5rem; border-bottom: 1px solid var(--creme); font: 300 clamp(1.875rem, 1.2rem + 3.4vw, 3.75rem)/1.05 var(--serif); letter-spacing: -.02em; color: var(--on-night); text-decoration: none; white-space: nowrap; }
+.big-tel-p { margin: 2rem 0 0; }
+.big-tel { display: inline-flex; align-items: flex-end; min-height: 3.25rem; padding-bottom: .5rem; border-bottom: 1px solid var(--creme); font: 300 clamp(1.875rem, 1.2rem + 3.4vw, 3.75rem)/1.05 var(--serif); letter-spacing: -.02em; color: var(--on-night); text-decoration: none; white-space: nowrap; }
 .big-tel:hover { color: #fff; }
 .rows { margin: 1.5rem 0 0; padding: 0; list-style: none; }
 .rows li { border-bottom: 1px solid var(--line-night); }
@@ -143,12 +133,13 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 /* ── Fuß ──────────────────────────────────────────────────────────────── */
 .foot { padding: 4rem 0 calc(6rem + env(safe-area-inset-bottom)); border-top: 1px solid var(--line-night); background: var(--night); font-size: var(--fs-sm); color: var(--on-night-2); }
 .foot-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-.foot .wm { font-size: 1.75rem; color: var(--on-night); }
-.foot .claim { margin: .75rem 0 0; font: italic 400 1.125rem/1.4 var(--serif); color: var(--on-night-2); }
+.foot .wm { display: inline-block; padding-block: .5rem; font-size: 1.75rem; color: var(--on-night); }
+.foot .claim { margin: .25rem 0 0; font: italic 400 1.125rem/1.4 var(--serif); color: var(--on-night-2); }
 .foot address { font-style: normal; line-height: 1.8; }
 .foot a { color: var(--on-night-2); text-decoration: none; }
 .foot a:hover { color: var(--creme); }
-.foot nav a { display: inline-flex; align-items: center; min-height: 2.75rem; margin-right: 1.25rem; }
+.foot .contact a, .foot nav a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.foot nav a { margin-right: 1.25rem; }
 .foot .copy { margin-top: 2rem; font-size: var(--fs-xs); color: var(--on-night-3); }
 @media (min-width: 48rem) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } .foot { padding-bottom: 4rem; } }
 @media (min-width: 48rem) { .dock { display: none; } }
@@ -161,3 +152,5 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .legal a { color: var(--on-night); }
 .legal .notice { margin: 1.5rem 0; padding: 1rem 1.25rem; border-radius: var(--r); background: var(--todo-bg); color: var(--todo-ink); }
 .legal .notice strong { color: var(--todo-ink); }
+.legal .todo { font-size: .875rem; }
+.legal { overflow-wrap: break-word; }   /* lange Komposita (Rechtstexte) nie aus der Box */

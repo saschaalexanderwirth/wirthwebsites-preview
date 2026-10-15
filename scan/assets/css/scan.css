@@ -56,6 +56,13 @@ html { scroll-padding-top: 1.5rem; }
 .draft p { margin: 0; color: var(--on-night-2); }
 .draft .btn { justify-self: start; }
 @media (min-width: 56rem) { .draft-pic img { aspect-ratio: 1440 / 900; } }
+/* Handy: Karten kompakt – kleines Vorschaubild links (Entwurf 1 steht schon groß im Intro), Text + Button rechts */
+@media (max-width: 47.99rem) {
+  .draft { grid-template-columns: 6.5rem minmax(0, 1fr); gap: .5rem 1rem; }
+  .draft-pic { grid-row: 1 / span 3; align-self: start; border-radius: .75rem; }
+  .draft > :not(.draft-pic) { grid-column: 2; }
+  .draft .btn { min-height: 3rem; padding-inline: 1.125rem; margin-top: .25rem; }
+}
 
 /* Persönliche Zeilen */
 .letter p { margin: 1.25rem 0 0; font-size: var(--fs-lead); line-height: 1.6; color: var(--on-night-2); }
