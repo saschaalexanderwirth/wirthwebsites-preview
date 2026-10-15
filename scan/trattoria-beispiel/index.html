@@ -127,6 +127,7 @@ a { color: inherit; }
 .rp-tk svg { display: block; }
 .rp-tk-blue { position: absolute; inset: 0; color: #53bdeb; }
 .rp-wa-link { pointer-events: auto; color: #027eb5; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+a.rp-wa-link { display: inline-block; box-sizing: border-box; min-height: 44px; padding-block: 12px; }
 .rp-card { display: block; margin: .3125rem -.3125rem 0 -.4375rem; border-radius: .4375rem; overflow: hidden; background: #f0f2f5; }
 .rp-card-img { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: #2a211a; }
 .rp-card-img picture, .rp-card-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -191,8 +192,8 @@ a { color: inherit; }
 .rp-faq { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(246, 241, 232, .12); text-align: left; }
 .rp-faq h2 { margin-bottom: 1rem; color: #f6f1e8; font: 400 1.75rem/1.2 var(--rp-serif); }
 .rp-faq details { border-bottom: 1px solid rgba(246, 241, 232, .12); }
-.rp-faq summary { padding-block: .875rem; color: #f6f1e8; cursor: pointer; font-size: .875rem; }
-.rp-faq details p { padding: 0 0 1rem; font-size: .875rem; line-height: 1.6; }
+.rp-faq summary { min-height: 44px; padding-block: .875rem; color: #f6f1e8; cursor: pointer; font-size: .875rem; }
+.rp-faq details p { padding: 0 0 1rem; color: rgba(246, 241, 232, .82); font-size: .875rem; line-height: 1.6; }
 
 /* Fester WhatsApp-Knopf = Haupt-CTA (überschreibt die alten .rw-wa-Regeln aus restaurant.css) */
 .rp-dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; justify-content: center; padding: 0 1rem calc(1rem + env(safe-area-inset-bottom)); pointer-events: none; }
