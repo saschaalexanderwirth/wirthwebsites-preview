@@ -1,0 +1,87 @@
+/* Wirth Websites – Design-Tokens (EINE Quelle für Website, Scan-Seite und Brief).
+   Quelle: wirthwebsites/design/tokens.css. Kopien in site/css/, scan/assets/css/, brief/css/
+   erzeugt design/sync.py – dort NICHT von Hand ändern. Doku: site/DESIGN.md */
+
+@font-face { font-family: "General Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/general-sans-400.woff2") format("woff2"); }
+@font-face { font-family: "General Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("../fonts/general-sans-500.woff2") format("woff2"); }
+@font-face { font-family: "General Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/general-sans-600.woff2") format("woff2"); }
+@font-face { font-family: "Newsreader"; font-weight: 200 800; font-style: normal; font-display: swap; src: url("../fonts/newsreader-display.woff2") format("woff2"); }
+@font-face { font-family: "Newsreader"; font-weight: 200 800; font-style: italic; font-display: swap; src: url("../fonts/newsreader-italic.woff2") format("woff2"); }
+
+:root {
+  /* Schrift */
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --sans: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Nacht (Grund) – von tief nach hell */
+  --night: #080a14;
+  --night-2: #0c0e17;
+  --night-3: #12141d;
+  --night-4: #1a1d29;
+
+  /* Creme (Text + einziger Akzent auf Nacht) */
+  --creme: #f3efe6;
+  --on-night: #ece6da;                    /* Fließtext auf Nacht, 15.9:1 */
+  --on-night-2: rgba(236, 230, 218, .74); /* Nebentext auf Nacht, ≥ 8.5:1 */
+  --on-night-3: rgba(236, 230, 218, .58); /* Kleingedrucktes, ≥ 5.5:1 */
+  --line-night: rgba(236, 230, 218, .16);
+  --edge-night: rgba(236, 230, 218, .32);
+
+  /* Papier (helle Räume, Brief) */
+  --paper: #f5f2ec;
+  --card: #fbfaf7;
+  --ink: #0e1726;                         /* Text auf Papier, 16:1 */
+  --ink-2: #535e6d;                       /* Nebentext auf Papier, 6.2:1 */
+  --line: rgba(14, 23, 38, .13);
+  --edge: rgba(14, 23, 38, .42);
+
+  /* Markierung für offene Punkte (nur Vorschau, nie live) */
+  --todo-bg: #fff1b8;
+  --todo-ink: #6b4a00;
+
+  /* Typo-Skala (fluid) */
+  --fs-xs: .875rem;
+  --fs-sm: .9375rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: clamp(1.125rem, 1.05rem + .35vw, 1.3125rem);
+  --fs-h3: clamp(1.3125rem, 1.15rem + .7vw, 1.625rem);
+  --fs-h2: clamp(2.125rem, 1.55rem + 2.6vw, 3.75rem);
+  --fs-h1: clamp(2.5rem, 1.7rem + 3.9vw, 5rem);
+
+  /* Raum */
+  --gut: clamp(1.25rem, .8rem + 2vw, 2.5rem);
+  --sec: clamp(4.5rem, 3rem + 7vw, 9rem);
+  --max: 72rem;
+  --measure: 38rem;
+
+  /* Form */
+  --r: .375rem;
+  --r-lg: 1.25rem;
+  --pill: 999px;
+  --arch: 999px 999px 0 0;
+
+  /* Bewegung – nur transform/opacity */
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);
+  --t-fast: .16s;
+  --t-reveal: .8s;
+
+  --shadow-float: 0 1px 2px rgba(8, 10, 20, .08), 0 12px 32px -10px rgba(8, 10, 20, .28);
+  --shadow-deep: 0 2px 4px rgba(0, 0, 0, .2), 0 24px 48px -16px rgba(0, 0, 0, .55);
+}
+
+/* ── Primitive, die alle drei Medien teilen ───────────────────────────── */
+
+/* Wortmarke: »Wirth« aufrecht, »Websites« kursiv – beides Newsreader */
+.wm { font: 400 1.25rem/1 var(--serif); letter-spacing: -.01em; white-space: nowrap; text-decoration: none; color: inherit; }
+.wm i { font-style: italic; font-weight: 400; }
+
+/* Abschnittsmarke: kursive Serife mit Haarlinie davor (keine Versal-Labels) */
+.eyebrow { display: flex; align-items: center; gap: .75rem; margin: 0 0 1.25rem; font: italic 400 1.1875rem/1.25 var(--serif); }
+.eyebrow::before { content: ""; flex: none; width: 2rem; height: 1px; background: currentColor; }
+
+/* Rundbild mit Ring im Grundton; .ini = Initialen-Kreis, wenn es kein Foto gibt */
+.av { display: block; width: 3.5rem; height: 3.5rem; border-radius: 50%; object-fit: cover; object-position: 50% 28%; background: var(--night-4); box-shadow: 0 0 0 3px var(--ring, var(--night)), 0 0 0 4px rgba(243, 239, 230, .22); }
+.ini { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--night-4); color: var(--creme); font: 400 1.125rem/1 var(--serif); letter-spacing: .04em; box-shadow: 0 0 0 3px var(--ring, var(--night)), 0 0 0 4px rgba(243, 239, 230, .22); }
+
+.todo { background: var(--todo-bg); color: var(--todo-ink); font: 600 max(.75rem, .75em)/1.2 var(--sans); letter-spacing: .02em; padding: .1em .4em; border-radius: .25em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }

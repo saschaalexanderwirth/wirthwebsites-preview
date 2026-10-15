@@ -1,0 +1,88 @@
+/* Persönliche Vorschau-Seite (Ziel des QR-Codes im Brief). Baut auf tokens.css + components.css auf.
+   Quelle: scan/assets/css/scan.css (von Hand gepflegt). Aufbau: Intro mit großem Entwurf → Entwürfe → Vergleich → Brief → Gespräch. */
+
+html { scroll-padding-top: 1.5rem; }
+.col { width: 100%; max-width: 40rem; margin-inline: auto; padding-inline: var(--gut); }
+.wide { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gut); }
+
+/* ── Intro: Name, Satz, Aktionen – daneben (Desktop) bzw. darunter (Handy) der Entwurf in voller Breite ── */
+.intro { position: relative; isolation: isolate; display: grid; gap: 2rem; max-width: var(--max); margin-inline: auto; padding: max(1rem, env(safe-area-inset-top)) var(--gut) clamp(3rem, 2rem + 4vw, 5rem); }
+.intro::before { content: ""; position: absolute; z-index: -1; left: -40%; top: -20rem; width: 120%; height: 44rem; border-radius: 50%; background: radial-gradient(closest-side, rgba(243, 239, 230, .08), transparent); pointer-events: none; }
+.sender { display: inline-flex; align-items: center; gap: .625rem; padding: .25rem .875rem .25rem .25rem; border-radius: var(--pill); box-shadow: inset 0 0 0 1px var(--line-night); font-size: var(--fs-sm); line-height: 1.25; }
+.sender img { width: 2.25rem; height: 2.25rem; border-radius: 50%; object-fit: cover; object-position: 50% 25%; }
+.sender span { display: block; color: var(--on-night-2); }
+.for { margin: 1.5rem 0 .5rem; font-size: var(--fs-sm); color: var(--on-night-2); }
+.hl { margin: 0; max-width: 16ch; font: 300 clamp(2.125rem, 1.4rem + 3.6vw, 4.25rem)/1.05 var(--serif); letter-spacing: -.022em; color: var(--on-night); }
+.intro-lead { margin: 1rem 0 0; max-width: 34rem; font-size: var(--fs-lead); line-height: 1.5; color: var(--on-night-2); }
+.intro-cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+.intro-cta .btn { flex: 1 1 13rem; white-space: nowrap; }
+.intro-alt { margin: .875rem 0 0; font-size: var(--fs-sm); color: var(--on-night-2); }
+.intro-alt a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--on-night); text-underline-offset: .25em; }
+
+/* Entwurf groß: auf dem Handy das Handy-Bild in voller Inhaltsbreite (kein zweites Handy-Gehäuse) */
+.show { position: relative; display: block; color: inherit; text-decoration: none; }
+.show-desk { display: none; }
+.show-phone { display: block; overflow: hidden; border-radius: 1.25rem; box-shadow: 0 0 0 1px var(--line-night), var(--shadow-deep); }
+.show-phone img { width: 100%; aspect-ratio: 390 / 700; object-fit: cover; object-position: top; }
+.show-cap { display: flex; align-items: center; gap: .5rem; margin-top: .875rem; font-size: var(--fs-sm); font-weight: 500; color: var(--creme); }
+.show:hover .show-cap { text-decoration: underline; text-underline-offset: .25em; }
+@media (min-width: 56rem) {
+  .intro { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: clamp(2.5rem, 5vw, 5rem); min-height: min(100svh, 56rem); padding-top: 2rem; }
+  .show { padding: 0 3.5rem 2.5rem 0; }
+  .show-desk { display: block; overflow: hidden; border-radius: .875rem; background: var(--night-3); box-shadow: 0 0 0 1px rgba(255, 255, 255, .1), var(--shadow-deep); }
+  .show-desk .bar { display: flex; gap: .375rem; padding: .625rem .75rem; }
+  .show-desk .bar i { width: .5rem; height: .5rem; border-radius: 50%; background: rgba(236, 230, 218, .25); }
+  .show-desk img { width: 100%; aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; }
+  .show-phone { position: absolute; right: 0; bottom: 0; width: 34%; border-radius: 1rem; box-shadow: 0 0 0 4px var(--night), 0 0 0 5px rgba(255, 255, 255, .14), var(--shadow-deep); }
+  .show-phone img { aspect-ratio: 390 / 760; }
+  .show-cap { position: absolute; left: 0; bottom: 0; margin: 0; }
+}
+
+/* ── Abschnitte ──────────────────────────────────────────────────────── */
+.part { position: relative; padding-block: clamp(3.5rem, 2.5rem + 4.5vw, 6.5rem); }
+.part::before { content: ""; position: absolute; top: 0; left: var(--gut); right: var(--gut); height: 1px; background: linear-gradient(90deg, transparent, var(--line-night), transparent); }
+.part .eyebrow { color: var(--creme); }
+.part h2 { max-width: 22ch; font: 300 clamp(2rem, 1.5rem + 2.4vw, 3.25rem)/1.06 var(--serif); letter-spacing: -.02em; }
+.part .sub { margin: 1rem 0 0; max-width: 40rem; color: var(--on-night-2); }
+
+/* Entwurfs-Karten */
+.drafts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: clamp(1.5rem, 1rem + 2vw, 2.5rem); margin: 2.25rem 0 0; padding: 0; list-style: none; }
+.draft { display: grid; align-content: start; gap: 1rem; }
+.draft-pic { display: block; overflow: hidden; border-radius: 1rem; background: var(--night-3); box-shadow: 0 0 0 1px var(--line-night), var(--shadow-deep); }
+.draft-pic img { width: 100%; aspect-ratio: 390 / 520; object-fit: cover; object-position: top; transition: transform .6s var(--ease-out); }
+@media (hover: hover) { .draft-pic:hover img { transform: scale(1.015); } }
+.draft h3 { font: 400 var(--fs-h3)/1.2 var(--serif); }
+.draft h3 span { color: var(--on-night-2); font-style: italic; }
+.draft p { margin: 0; color: var(--on-night-2); }
+.draft .btn { justify-self: start; }
+@media (min-width: 56rem) { .draft-pic img { aspect-ratio: 1440 / 900; } }
+
+/* Persönliche Zeilen */
+.letter p { margin: 1.25rem 0 0; font-size: var(--fs-lead); line-height: 1.6; color: var(--on-night-2); }
+.letter h2 { font: 300 clamp(2rem, 1.5rem + 2.4vw, 3rem)/1.06 var(--serif); }
+.letter .story { color: var(--on-night); font-family: var(--serif); font-style: italic; font-weight: 300; }
+.sig { display: flex; align-items: center; gap: .875rem; margin-top: 2rem; }
+.sig .av { width: 3rem; height: 3rem; }
+.sig b { display: block; font: 400 1.25rem/1.2 var(--serif); }
+.sig span { font-size: var(--fs-sm); color: var(--on-night-2); }
+
+/* Schluss: Team, ein Satz, primärer Button */
+.end { position: relative; isolation: isolate; overflow: hidden; padding: 3.5rem 0 calc(6rem + env(safe-area-inset-bottom)); text-align: center; }
+.end::before { content: ""; position: absolute; z-index: -1; left: -30%; right: -30%; top: -8rem; height: 28rem; background: radial-gradient(closest-side, rgba(243, 239, 230, .12), transparent); }
+.end::after { content: ""; position: absolute; left: var(--gut); right: var(--gut); top: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(243, 239, 230, .5), transparent); }
+.team { display: flex; justify-content: center; margin: 0; padding: 0; list-style: none; }
+.team li + li { margin-left: -.75rem; }
+.team .av, .team .ini { width: 4rem; height: 4rem; }
+.team-name { margin: .75rem auto 0; font-size: var(--fs-sm); color: var(--on-night-2); }
+.end h2 { max-width: 18ch; margin: 1rem auto 0; font: 300 clamp(1.875rem, 1.4rem + 2.4vw, 2.75rem)/1.12 var(--serif); letter-spacing: -.02em; }
+.end-actions { display: grid; gap: .25rem; justify-items: center; margin-top: 1.75rem; }
+.end-actions .btn-creme { width: 100%; max-width: 26rem; font-size: clamp(1rem, 4.2vw, 1.125rem); }
+.end-actions .btn span { display: block; text-align: left; line-height: 1.15; }
+.end-actions .btn small { display: block; margin-top: .2rem; font-size: .875rem; font-weight: 400; opacity: .75; }
+.end .trust { justify-content: center; }
+.end .faq { margin-top: 2.5rem; text-align: left; }
+.foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 1.25rem; margin-top: 2rem; font-size: var(--fs-sm); }
+.foot-links a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--on-night-3); text-decoration: none; }
+.foot-links a:hover { color: var(--creme); }
+.small { margin: 1rem auto 0; font-size: var(--fs-xs); color: var(--on-night-3); }
+@media (min-width: 48rem) { .dock { left: auto; right: 1.25rem; bottom: 1.25rem; width: 22rem; border-radius: var(--pill); padding: .375rem; } .end { padding-bottom: 4rem; } }

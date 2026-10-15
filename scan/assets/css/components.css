@@ -1,0 +1,117 @@
+/* Wirth Websites – Bildschirm-Komponenten für Website UND Scan-Seite.
+   Quelle: wirthwebsites/design/components.css (Kopien per design/sync.py). Braucht tokens.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html, body { margin: 0; padding: 0; overflow-x: clip; }
+body { font: 400 var(--fs-body)/1.6 var(--sans); color: var(--on-night); background: var(--night); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+img, svg, picture { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+p { max-width: 65ch; text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; font-family: var(--serif); font-weight: 300; margin: 0; }
+:focus-visible { outline: 2px solid var(--creme); outline-offset: 3px; }
+.on-paper :focus-visible { outline-color: var(--ink); }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 1rem; top: -4rem; z-index: 100; padding: .75rem 1rem; border-radius: var(--r); background: var(--creme); color: var(--night); }
+.skip:focus { top: 1rem; }
+
+/* Überschriften */
+.h1 { font: 300 var(--fs-h1)/1.02 var(--serif); letter-spacing: -.025em; }
+.h2 { font: 300 var(--fs-h2)/1.04 var(--serif); letter-spacing: -.022em; }
+.h3 { font: 400 var(--fs-h3)/1.2 var(--serif); letter-spacing: -.01em; }
+.lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--on-night-2); }
+
+/* Buttons: Pille, Creme auf Nacht (primär) bzw. Haarlinie (sekundär) */
+.btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .625rem; min-height: 3.5rem; padding: 0 1.5rem; border: 0; border-radius: var(--pill); padding-block: .5rem; font: 500 1.0625rem/1.15 var(--sans); text-align: center; text-decoration: none; cursor: pointer; touch-action: manipulation; transition: transform var(--t-fast) var(--ease-out), background-color .2s, box-shadow .2s, color .2s; }
+.btn:active { transform: scale(.97); }
+.btn svg { flex: none; }
+.btn-creme { background: var(--creme); color: var(--night); }
+.btn-ghost { background: transparent; color: var(--on-night); box-shadow: inset 0 0 0 1px var(--edge-night); }
+.btn-ink { background: var(--ink); color: var(--paper); }
+.btn-link { min-height: 2.75rem; padding: 0 .25rem; background: none; color: var(--on-night-2); text-decoration: underline; text-underline-offset: .3em; text-decoration-color: var(--edge-night); }
+.btn .mini { flex: none; width: 2rem; height: 2rem; margin-left: -.75rem; border-radius: 50%; object-fit: cover; object-position: 50% 25%; box-shadow: 0 0 0 1px rgba(8,10,20,.25); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-creme:hover { background: #fff; }
+  .btn-ghost:hover { box-shadow: inset 0 0 0 1px var(--creme); color: var(--creme); }
+  .btn-ink:hover { background: #1a2436; }
+  .btn-link:hover { color: var(--creme); text-decoration-color: currentColor; }
+}
+
+/* Vertrauens-Punkte neben dem CTA: Linien-Icon + kurzer Satz */
+.trust { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); line-height: 1.35; color: var(--on-night-2); }
+.trust li { display: inline-flex; align-items: center; gap: .5rem; }
+.trust svg { flex: none; width: 1rem; height: 1rem; }
+
+/* Nummerierte Liste mit Haarlinien (»01 Leistung – Satz«) */
+.nlist { margin: 0; padding: 0; list-style: none; counter-reset: n; border-top: 1px solid var(--line-night); }
+.nlist > li { counter-increment: n; display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 0 .5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line-night); }
+.nlist > li::before { content: counter(n, decimal-leading-zero); padding-top: .3rem; font: italic 400 1.0625rem/1 var(--serif); color: var(--creme); font-variant-numeric: tabular-nums; }
+.nlist h3 { font: 400 var(--fs-h3)/1.2 var(--serif); letter-spacing: -.01em; color: var(--on-night); }
+.nlist p { margin: .375rem 0 0; color: var(--on-night-2); }
+.on-paper .nlist { border-color: var(--line); }
+.on-paper .nlist > li { border-color: var(--line); }
+.on-paper .nlist > li::before { color: var(--ink); }
+.on-paper .nlist h3 { color: var(--ink); }
+.on-paper .nlist p { color: var(--ink-2); }
+
+/* FAQ: native details/summary – funktioniert ohne JS */
+.faq details { border-top: 1px solid var(--line-night); }
+.faq details:last-child { border-bottom: 1px solid var(--line-night); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 4rem; padding: .875rem 0; font: 400 1.25rem/1.25 var(--serif); letter-spacing: -.005em; cursor: pointer; list-style: none; touch-action: manipulation; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; flex: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: linear-gradient(currentColor, currentColor) center / .75rem 1px no-repeat, linear-gradient(currentColor, currentColor) center / 1px .75rem no-repeat; box-shadow: inset 0 0 0 1px var(--edge-night); color: var(--creme); transition: transform .4s var(--ease-out); }
+.faq details[open] summary::after { transform: rotate(135deg); }
+.faq .acc { padding: 0 3.25rem 1.5rem 0; color: var(--on-night-2); }
+.faq .acc p { margin: 0; }
+
+/* ── Vorher/Nachher-Schieber ([data-ba], Logik in ba.js) ─────────────────
+   Ohne clip-path: das »Nachher«-Fenster wird verschoben, sein Inhalt gegenläufig (nur transform). */
+.ba { --p: 50; position: relative; overflow: hidden; isolation: isolate; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize; }
+.ba-layer { position: absolute; inset: 0; }
+.ba-new { overflow: hidden; transform: translate3d(calc(var(--p) * 1%), 0, 0); will-change: transform; }
+.ba-new > .ba-in { position: absolute; inset: 0; transform: translate3d(calc(var(--p) * -1%), 0, 0); will-change: transform; }
+.ba-rail { position: absolute; inset: 0; z-index: 4; pointer-events: none; transform: translate3d(calc(var(--p) * 1%), 0, 0); will-change: transform; }
+.ba-rail::before { content: ""; position: absolute; left: -1px; top: 0; bottom: 0; width: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(8, 10, 20, .3); }
+.ba-knob { position: absolute; left: calc(-1.5rem - (var(--p) - 50) * .03rem); top: 50%; width: 3rem; height: 3rem; margin-top: -1.5rem; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--ink); box-shadow: var(--shadow-float); cursor: ew-resize; pointer-events: auto; touch-action: none; transition: transform var(--t-fast) var(--ease-out); }
+.ba-knob:focus-visible { outline: 2px solid var(--night); outline-offset: 2px; box-shadow: 0 0 0 6px var(--creme), var(--shadow-float); }  /* zweifarbig: sichtbar auf hellem und dunklem Grund */
+.ba.is-drag .ba-knob { transform: scale(1.08); }
+.ba-tags { display: flex; justify-content: space-between; margin-top: .875rem; font-size: var(--fs-sm); font-weight: 500; color: var(--on-night-2); }
+
+/* Vergleich (Website-Beispiel + Vorschau-Seite): Entwurf zuerst ganz sichtbar, Umschalter »Heute/Entwurf« + Regler,
+   Unterschiede als Text daneben (aria-describedby am Regler). Bilder: Handy-Aufnahme 390×844, ab 56rem Desktop 1440×900. */
+.cmp { display: grid; gap: 2rem; margin-top: 2.25rem; }
+.cmp-stage { min-width: 0; }
+.seg { display: inline-flex; padding: .25rem; margin-bottom: .875rem; border-radius: var(--pill); box-shadow: inset 0 0 0 1px var(--edge-night); }
+.seg button { min-height: 2.75rem; padding: 0 1.125rem; border: 0; border-radius: var(--pill); background: transparent; color: var(--on-night-2); font: 500 var(--fs-sm)/1 var(--sans); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--creme); color: var(--night); }
+.cmp-ba { aspect-ratio: 390 / 844; max-height: 80svh; margin-inline: auto; border-radius: 1rem; background: var(--night-3); box-shadow: 0 0 0 1px var(--line-night), var(--shadow-deep); }
+.cmp-ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; -webkit-user-drag: none; }
+.hint { margin: .75rem 0 0; font-size: var(--fs-sm); color: var(--on-night-2); }
+.cmp-txt .nlist { border-top: 1px solid var(--line-night); }
+.cmp-txt > .btn { margin-top: 1.75rem; }
+@media (min-width: 56rem) {
+  .cmp { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(2.5rem, 5vw, 4.5rem); align-items: start; }
+  .cmp-ba { aspect-ratio: 1440 / 900; max-height: none; }
+  .cmp-txt { padding-top: 3.75rem; }
+}
+
+/* Einmalige Einblendung für Nebeninhalte (nur mit JS, nie bei reduzierter Bewegung).
+   Fail-open: .js nimmt das Inline-Skript im <head> wieder weg, wenn ba.js nicht lädt (onerror / 2,5 s ohne window.wwReady). */
+.js [data-rv] { opacity: 0; transform: translate3d(0, 1rem, 0); transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out); transition-delay: var(--d, 0s); }
+.js [data-rv].in { opacity: 1; transform: none; }
+
+/* Leiste unten (mobil): Rundbild + Anruf-Pille */
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; gap: .5rem; padding: .5rem .75rem calc(.5rem + env(safe-area-inset-bottom)); background: rgba(8, 10, 20, .92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 -1px 0 var(--line-night), 0 -10px 30px -12px rgba(8, 10, 20, .45); }
+/* Versteckt nur mit JS – und dann auch für die Tastatur (visibility), ohne JS bleibt die Leiste einfach stehen. */
+.js .dock { transform: translate3d(0, 110%, 0); visibility: hidden; transition: transform .4s var(--ease-drawer), visibility 0s .4s; }
+.js .dock.on { transform: none; visibility: visible; transition: transform .4s var(--ease-drawer); }
+.dock .btn { flex: 1; min-height: 3.25rem; }
+.dock .btn small { display: block; margin-top: .2rem; font-size: .75rem; font-weight: 400; opacity: .7; }
+.dock .btn span { display: block; text-align: left; line-height: 1.1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .js [data-rv] { opacity: 1; transform: none; }
+}
