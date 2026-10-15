@@ -20,7 +20,7 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .head { position: sticky; top: 0; z-index: 30; background: rgba(8, 10, 20, .84); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 1px 0 var(--line-night); }
 .head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4rem; }
 .head .wm { display: inline-flex; align-items: center; gap: .625rem; min-height: 2.75rem; font-size: 1.3125rem; color: var(--on-night); }
-.head .wm svg { width: 1.75rem; height: 1.75rem; }
+.head .wm svg { width: 5.94rem; height: 2.25rem; }   /* Wortmarke Option 4 (design/logo.svg), Seitenverhältnis 153 : 58 */
 .nav { display: none; }
 .nav ul { display: flex; gap: .25rem; margin: 0; padding: 0; list-style: none; }
 .nav a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 .75rem; font-size: var(--fs-sm); color: var(--on-night-2); text-decoration: none; transition: color .2s; }
@@ -75,6 +75,10 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .two { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
 .two .sec-head { margin-bottom: 0; }
 @media (min-width: 56rem) { .two { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 7vw, 7rem); align-items: start; } .two .sec-head { position: sticky; top: 7rem; } }
+/* KI-Hinweis unter den Leistungen: ein Satz, Einzelheiten folgen (keine Preise) */
+.ki-note { margin: 0; padding: 1.125rem 1.25rem; border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--edge-night); color: var(--on-night-2); font-size: var(--fs-sm); line-height: 1.5; }
+.ki-note b { display: block; margin-bottom: .25rem; font: 400 var(--fs-h3)/1.25 var(--serif); color: var(--on-night); }
+@media (min-width: 56rem) { .two .ki-note { grid-column: 2; margin-top: calc(-1 * clamp(1rem, 3vw, 2.5rem)); } }
 
 /* ── Abo (Papier) ─────────────────────────────────────────────────────── */
 .abo-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: start; }
@@ -112,6 +116,7 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 .big-tel-p { margin: 2rem 0 0; }
 .big-tel { display: inline-flex; align-items: flex-end; min-height: 3.25rem; padding-bottom: .5rem; border-bottom: 1px solid var(--creme); font: 300 clamp(1.875rem, 1.2rem + 3.4vw, 3.75rem)/1.05 var(--serif); letter-spacing: -.02em; color: var(--on-night); text-decoration: none; white-space: nowrap; }
 .big-tel:hover { color: #fff; }
+.wa-num { margin: .75rem 0 0; font-size: var(--fs-sm); color: var(--on-night-2); }
 .rows { margin: 1.5rem 0 0; padding: 0; list-style: none; }
 .rows li { border-bottom: 1px solid var(--line-night); }
 .rows a, .rows span { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 3.75rem; color: var(--on-night); text-decoration: none; overflow-wrap: anywhere; }
@@ -133,7 +138,8 @@ html { scroll-padding-top: 7.5rem; }   /* Sprungziele nicht unter dem Kopf (mobi
 /* ── Fuß ──────────────────────────────────────────────────────────────── */
 .foot { padding: 4rem 0 calc(6rem + env(safe-area-inset-bottom)); border-top: 1px solid var(--line-night); background: var(--night); font-size: var(--fs-sm); color: var(--on-night-2); }
 .foot-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-.foot .wm { display: inline-block; padding-block: .5rem; font-size: 1.75rem; color: var(--on-night); }
+.foot .wm { display: inline-block; padding-block: .5rem; color: var(--on-night); }
+.foot .wm svg { display: block; width: 8.57rem; height: 3.25rem; }
 .foot .claim { margin: .25rem 0 0; font: italic 400 1.125rem/1.4 var(--serif); color: var(--on-night-2); }
 .foot address { font-style: normal; line-height: 1.8; }
 .foot a { color: var(--on-night-2); text-decoration: none; }
