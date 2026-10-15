@@ -1,7 +1,20 @@
 [
-  {
-    "datei": "brief-beispiel-1",
-    "firma": "Malerbetrieb Schmid",
-    "slug": "malerbetrieb-schmid"
-  }
+ {
+  "datei": "brief-beispiel-1",
+  "firma": "Malerbetrieb Schmid",
+  "slug": "malerbetrieb-schmid",
+  "vorlage": "vorlage.html"
+ },
+ {
+  "datei": "brief-beispiel-2",
+  "firma": "Steuerberatung Beispiel",
+  "slug": "steuerberatung-beispiel",
+  "vorlage": "vorlage.html"
+ },
+ {
+  "datei": "brief-restaurant-beispiel",
+  "firma": "Trattoria Esempio",
+  "slug": "trattoria-beispiel",
+  "vorlage": "vorlage-restaurant.html"
+ }
 ]
