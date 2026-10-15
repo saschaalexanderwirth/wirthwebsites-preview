@@ -8,5 +8,10 @@
   "datei": "brief-beispiel-2",
   "firma": "Steuerberatung Beispiel",
   "slug": "steuerberatung-beispiel"
+ },
+ {
+  "datei": "brief-beispiel-3",
+  "firma": "Trattoria Esempio",
+  "slug": "trattoria-beispiel"
  }
 ]
