@@ -74,3 +74,56 @@
 .rw-scan-skip { position: absolute; top: max(.75rem, env(safe-area-inset-top)); right: .75rem; min-height: 2.75rem; padding: 0 1rem; border: 0; border-radius: 999px; background: transparent; color: var(--on-night-3); font: 400 1rem/1 var(--sans); cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .rw-scan-line { animation: none; transform: none; height: 100%; background: rgba(243, 239, 230, .06); } }
 .rw .e-data dd a { display: inline-flex; align-items: center; min-height: 2.75rem; margin-block: -.75rem; }
+
+/* Kurzer Entwurf statt vollständiger Restaurant-Seite. */
+.rp-preview { position: relative; height: 36rem; overflow: hidden; overflow: clip; }
+.rp-preview::after { content: ""; position: absolute; inset: auto 0 0; height: 10rem; background: linear-gradient(transparent, var(--e-bg)); pointer-events: none; }
+.rp-preview .rp-hero { min-height: 26rem; }
+.rp-preview .rp-hero-txt { padding-bottom: 3rem; }
+.rp-preview .rp-sec { padding-top: 3rem; }
+.rp-draft { position: absolute; top: 1rem; left: 1rem; z-index: 2; padding: .4rem .8rem; border: 1px solid #ffffff70; border-radius: 999px; background: #0d0b09d9; color: #fff; font: 500 .8125rem/1.3 var(--sans); }
+.rp-preview-cta { padding: 0 1.5rem 3rem; text-align: center; }
+.rp-preview-cta > p:first-child { max-width: 25rem; margin-inline: auto; color: var(--e-ink2); }
+.rp-preview-cta .rp-cta-btn, .rp-end-cta .rp-cta-btn { background: #25d366; color: #0d0b09; }
+.rp-preview-cta .rw-wa-ico, .rp-end-cta .rw-wa-ico { color: #0d0b09; }
+.rp-wa-note { margin-top: .625rem; font: 400 .75rem/1.4 var(--sans); text-wrap: balance; }
+.rp-foot .rp-wirth { margin-top: 0; padding-top: 0; border-top: 0; }
+.rp-chat.rp-chat-on { height: calc(100svh + 2000px); }
+.rp-card { max-width: 8rem; }
+.rp-card-img { aspect-ratio: 2.5 / 1; }
+.rp-card-txt span { display: none; }
+.rp-ph { width: 7rem; }
+.rp-end-cta { margin-top: 2rem; }
+.rp-foot { padding-top: 1.5rem; padding-bottom: calc(2rem + env(safe-area-inset-bottom)); }
+@media (max-width: 47.99rem) {
+  .rp-dock { display: grid; justify-items: center; gap: .375rem; padding: .625rem 1rem calc(.625rem + env(safe-area-inset-bottom)); background: #0d0b09f5; color: #f6f1e8; }
+  .rp-dock .rp-wa-note { margin: 0; }
+  .rp-chat-on .rp-chat-stage { padding-bottom: calc(7rem + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* The early CTA includes its microcopy; only show the dock after all of it has passed. */
+.rp-dock, .rp-cta-seen .rp-dock { opacity: 0; visibility: hidden; transform: translateY(1rem); pointer-events: none; }
+.rp-dock.is-visible { opacity: 1; visibility: visible; transform: none; }
+.rp-dock .rw-wa { pointer-events: none; }
+.rp-dock.is-visible .rw-wa { pointer-events: auto; }
+/* Preserve the conversation in the inner list, with compact previews and room for the final link. */
+.rp-wa-head, .rp-wa-bar { flex-shrink: 0; }
+.rp-wa-col { gap: .25rem; padding: .5rem .5rem 1rem; }
+.rp-m { max-width: 90%; padding: .25rem .4375rem; }
+.rp-card-txt { padding: .25rem .375rem; }
+.rp-card-txt b { font-size: .75rem; }
+.rp-card-site { font-size: .875rem; }
+.rp-wa-col .rp-card-txt small { font-size: .625rem; }
+.rp-wlogo { margin-top: 1rem; }
+.rp-faq { margin-top: 1.25rem; padding-top: 1.25rem; }
+.rp-end-cta { margin-top: 1rem; }
+.rp-end-cta .rp-cta-btn { margin-top: .5rem; }
+.rp-screen { font-size: .8125rem; line-height: 1.25; }
+.rp-card { max-width: 7rem; }
+.rp-card-img { aspect-ratio: 3 / 1; }
+.rp-card-txt small { display: none; }
+.rp-chat-on .rp-wa-head { padding-top: 2.25rem; }
+.rp-chat-on .rp-wa-bar { padding-bottom: .75rem; }
