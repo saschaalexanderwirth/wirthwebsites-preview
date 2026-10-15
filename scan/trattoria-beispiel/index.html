@@ -6,37 +6,206 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <title>Trattoria Esempio · Ihre neue Website von Wirth Websites</title>
-<meta name="theme-color" content="#080a14">
+<meta name="theme-color" content="#0d0b09">
 <link rel="icon" href="../assets/favicon.ico" sizes="32x32"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-<link rel="preload" href="../assets/fonts/general-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../assets/fonts/newsreader-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/pasta-teller-hoch.webp" as="image" type="image/webp" media="(max-width: 47.99rem)">
 <link rel="stylesheet" href="../assets/css/tokens.css">
-<link rel="stylesheet" href="../assets/css/components.css">
-<link rel="stylesheet" href="../assets/css/entwurf.css">
 <link rel="stylesheet" href="../assets/css/restaurant.css">
 <style>
-/* Kompakter Wirth-Hinweis vor dem Fuß (.rw-mini): 3 Schritte, Testphase, Preis, Kundenstimme. Inline, restaurant.css bleibt unberührt. */
-.rw-mini{padding-block:1.75rem;border-top:1px solid color-mix(in srgb,var(--e-ink) 12%,transparent);text-align:center;font-size:.875rem;line-height:1.4;color:var(--e-ink2)}
-.rw-mini-steps{display:flex;justify-content:center;gap:clamp(.5rem,.2rem + 1.5vw,1.5rem);margin:0;padding:0;list-style:none}
-.rw-mini-steps li{display:flex;flex-direction:column;align-items:center;gap:.375rem;flex:0 1 7.5rem;min-width:0;font:500 .8125rem/1.25 var(--sans);color:var(--e-ink)}
-.rw-mini-ico{position:relative;display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:50%;background:color-mix(in srgb,var(--e-acc) 14%,transparent);color:var(--e-ink)}
-.rw-mini-ico svg{width:1.125rem;height:1.125rem}
-.rw-mini-ico b{position:absolute;top:-.25rem;right:-.375rem;display:grid;place-items:center;width:1.0625rem;height:1.0625rem;border-radius:50%;background:var(--e-acc);color:var(--e-acc-ink);font:700 .625rem/1 var(--sans)}
-.rw-mini-badge{display:inline-block;margin:1rem 0 0;padding:.25rem .75rem;border-radius:999px;background:color-mix(in srgb,#25d366 16%,transparent);color:var(--e-ink);font:600 .8125rem/1.3 var(--sans)}
-.rw-mini-price{margin:.5rem auto 0;text-wrap:balance;color:var(--e-ink)}
-.rw-mini-quote{display:flex;align-items:center;justify-content:center;gap:.625rem;margin:.75rem auto 0;max-width:30rem;text-align:left}
-.rw-mini-quote img{flex:none;width:2.25rem;height:2.25rem;border-radius:50%;object-fit:cover;object-position:50% 25%}
-.rw-mini-quote p{margin:0;font-style:italic}
+/* Variante restaurant-whatsapp, Premium-Layout: Hero · Empfehlungen · Ambiente · Zeiten & Lage, schwarzer Fuß mit Wirth-Hinweis.
+   tokens.css liefert General Sans + die Variablen der Scan-Animation, restaurant.css die Scan-Animation selbst. */
+@font-face { font-family: "Cormorant Garamond"; font-weight: 300 700; font-style: normal; font-display: swap; src: url("../assets/fonts/cormorant-garamond.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 300 700; font-style: italic; font-display: swap; src: url("../assets/fonts/cormorant-garamond-italic.woff2") format("woff2"); }
+:root { --e-bg: #faf6ef; --e-ink: #24190f; --e-ink2: #5d4f43; --e-acc: #9c2f22; --e-acc-ink: #ffffff; --e-band: #f1e7d7;
+  --rp-serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif; --rp-black: #0d0b09; --rp-pad: clamp(1.5rem, 6vw, 3rem);
+  --rp-dock: calc(5.25rem + env(safe-area-inset-bottom)); }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; overflow-x: clip; }
+body { font: 400 1rem/1.6 var(--sans); color: var(--e-ink); background: var(--e-bg); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3, p, dl, dd, figure, blockquote { margin: 0; }
+a { color: inherit; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.rp-skip { position: absolute; left: .75rem; top: -4rem; z-index: 100; padding: .75rem 1rem; background: #fff; color: #000; }
+.rp-skip:focus { top: .75rem; }
+:where(a, button):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.rp-kicker { font: 500 .6875rem/1.2 var(--sans); letter-spacing: .24em; text-transform: uppercase; }
+.rp-wrap { width: min(100% - 2 * var(--rp-pad), 34rem); margin-inline: auto; }
+
+/* Leiste oben (gehört zu Wirth Websites, nicht zum Restaurant) */
+.rp-bar { display: flex; align-items: center; justify-content: center; min-height: 2.25rem; padding: .375rem 1rem; background: var(--rp-black); color: rgba(246, 241, 232, .7); font: 400 .8125rem/1.3 var(--sans); letter-spacing: .01em; text-align: center; text-wrap: balance; }
+.rp-bar b { font-weight: 600; color: #fff; white-space: nowrap; }
+.rp-bar-dot { color: #25d366; margin-right: .375rem; font-size: .625rem; vertical-align: .1em; }
+.rp-bar-sub { white-space: nowrap; font-size: .75rem; }
+
+/* Hero: Foto randlos, Text unten auf dunklem Verlauf */
+.rp-hero { position: relative; isolation: isolate; display: grid; grid-template-rows: auto 1fr auto; min-height: calc(100svh - 2.25rem); color: #f6f1e8; background: #1a140f; }
+.rp-hero picture, .rp-hero picture img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
+.rp-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 8, 6, .55) 0%, rgba(10, 8, 6, 0) 22%, rgba(10, 8, 6, 0) 42%, rgba(10, 8, 6, .82) 100%); }
+.rp-mark { justify-self: center; padding-top: clamp(1.5rem, 5vh, 2.5rem); text-align: center; text-decoration: none; }
+.rp-mark small { display: block; margin-bottom: .25rem; font: 500 .625rem/1 var(--sans); letter-spacing: .38em; text-transform: uppercase; opacity: .85; padding-left: .38em; }
+.rp-mark span { font: 400 2rem/1 var(--rp-serif); letter-spacing: .02em; }
+.rp-hero-txt { position: relative; grid-row: 3; padding-bottom: calc(var(--rp-dock) + 1.75rem); }
+/* lokaler Verlauf direkt hinter Kicker + Headline: Lesbarkeit auch auf hellen Fotostellen */
+.rp-hero-txt::before { content: ""; position: absolute; z-index: -1; inset: -35% -40% 0; background: radial-gradient(ellipse 70% 60% at 35% 55%, rgba(10, 8, 6, .62) 0%, rgba(10, 8, 6, .38) 45%, rgba(10, 8, 6, 0) 75%); pointer-events: none; }
+.rp-hero h1, .rp-hero .rp-kicker { text-shadow: 0 1px 18px rgba(10, 8, 6, .45); }
+.rp-hero .rp-kicker { margin-bottom: 1rem; color: rgba(246, 241, 232, .8); }
+.rp-hero h1 { font: 300 clamp(2.75rem, 11.5vw, 4.75rem)/.98 var(--rp-serif); letter-spacing: -.015em; text-wrap: balance; }
+.rp-hero h1 em { font-style: italic; }
+.rp-hero-link { display: inline-flex; align-items: center; gap: .625rem; min-height: 2.75rem; margin-top: 1.25rem; font: 500 .75rem/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; }
+.rp-hero-link::after { content: ""; width: 2.5rem; height: 1px; background: currentColor; transition: width .4s var(--ease-out); }
+.rp-hero-link:hover::after { width: 3.5rem; }
+
+/* Abschnitte */
+.rp-sec { padding-block: clamp(5rem, 18vw, 8.5rem); }
+.rp-head { margin-bottom: clamp(2.5rem, 9vw, 3.5rem); text-align: center; }
+.rp-head .rp-kicker { color: var(--e-acc); }
+.rp-head h2 { margin-top: .875rem; font: 300 clamp(2.25rem, 9vw, 3.25rem)/1.05 var(--rp-serif); letter-spacing: -.01em; }
+.rp-head h2 em { font-style: italic; }
+.rp-orn { display: block; width: 2.5rem; height: 1px; margin: 1.5rem auto 0; background: color-mix(in srgb, var(--e-ink) 30%, transparent); }
+
+/* Empfehlungen: Name links, Preis rechts, feine Punktlinie dazwischen */
+.rp-dishes { display: grid; gap: 1.75rem; }
+.rp-dish { display: flex; align-items: last baseline; gap: .75rem; }
+.rp-dish h3 { font: 400 1.5rem/1.2 var(--rp-serif); letter-spacing: 0; min-width: 0; text-wrap: balance; }
+.rp-dish i { flex: 1 1 1.5rem; min-width: 1.5rem; border-bottom: 1px dotted color-mix(in srgb, var(--e-ink) 35%, transparent); transform: translateY(-.3rem); }
+.rp-dish data { flex: none; font: 400 1.25rem/1.2 var(--rp-serif); font-variant-numeric: lining-nums tabular-nums; color: var(--e-ink2); }
+.rp-note { margin-top: 2.75rem; text-align: center; font: italic 400 1.0625rem/1.4 var(--rp-serif); color: var(--e-ink2); }
+
+/* Ambiente: ein großes Bild, eine Zeile */
+.rp-amb { position: relative; margin: 0; }
+.rp-amb img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.rp-amb figcaption { padding: 1.5rem var(--rp-pad) 0; text-align: center; font: italic 300 clamp(1.5rem, 6.5vw, 2rem)/1.25 var(--rp-serif); text-wrap: balance; }
+
+/* Zeiten & Lage */
+.rp-info { text-align: center; }
+.rp-hours { display: grid; gap: 1.125rem; }
+.rp-hours div { display: grid; gap: .125rem; }
+.rp-hours dt { font: 500 .6875rem/1.4 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--e-ink2); }
+.rp-hours dd { font: 400 1.375rem/1.3 var(--rp-serif); font-variant-numeric: lining-nums; }
+.rp-addr { font-variant-numeric: lining-nums; margin-top: 3rem; padding-top: 3rem; border-top: 1px solid color-mix(in srgb, var(--e-ink) 14%, transparent); font: 400 1.375rem/1.4 var(--rp-serif); font-style: normal; }
+.rp-addr span { display: block; margin-top: .75rem; font: 400 .9375rem/1.6 var(--sans); color: var(--e-ink2); }
+
+/* Fuß: Restaurant-Kürzel, dann der Wirth-Hinweis */
+.rp-foot { padding: clamp(4rem, 14vw, 6rem) 0 calc(2.5rem + env(safe-area-inset-bottom)); background: var(--rp-black); color: rgba(246, 241, 232, .66); text-align: center; font-size: .875rem; line-height: 1.6; }
+.rp-foot-mark { font: 400 1.5rem/1 var(--rp-serif); color: #f6f1e8; }
+.rp-foot-links { display: flex; justify-content: center; gap: 1.25rem; margin-top: .5rem; }
+.rp-foot-links a { display: inline-flex; align-items: center; min-height: 2.75rem; text-decoration: none; }
+.rp-wirth { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(246, 241, 232, .12); }
+/* So geht's: WhatsApp-Chat, beim Scrollen live erlebt. Ohne JS / reduzierte Bewegung = alle Nachrichten statisch.
+   Mit JS setzt restaurant.js .rp-chat-on: hoher Abschnitt, Handy klebt (sticky), Fortschritt steuert NUR transform/opacity. */
+.rp-chat { position: relative; margin-inline: calc(-1 * var(--rp-pad)); }
+.rp-chat-stage { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding-inline: var(--rp-pad); }
+.rp-chat-kick { color: rgba(246, 241, 232, .55); }
+.rp-chat-steps { display: grid; place-items: center; min-height: 1.75rem; margin-bottom: .75rem; font: 400 1.375rem/1.2 var(--rp-serif); color: #f6f1e8; }
+.rp-chat-steps span { grid-area: 1 / 1; }
+.rp-chat-steps span:not(:last-child) { opacity: 0; }
+.rp-phone { width: min(100%, 21.5rem); padding: .5rem; border-radius: 2.875rem; background: #1c1916; box-shadow: inset 0 0 0 1px rgba(246, 241, 232, .14), 0 0 0 1px #000, 0 50px 90px -40px rgba(0, 0, 0, .9); }
+.rp-screen { position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 2.375rem; background: #efe7dc; color: #111b21; text-align: left; font: 400 .875rem/1.35 -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif; -webkit-mask-image: radial-gradient(#000, #000); }
+.rp-island { position: absolute; top: .5rem; left: 50%; z-index: 3; width: 5.75rem; height: 1.625rem; border-radius: 1rem; background: #000; transform: translateX(-50%); }
+.rp-wa-head { position: relative; z-index: 2; display: flex; align-items: center; gap: .625rem; padding: 2.75rem .875rem .625rem; background: rgba(246, 246, 246, .96); box-shadow: 0 1px 0 rgba(0, 0, 0, .08); }
+.rp-wa-back { flex: none; color: #007aff; }
+.rp-wa-ava { flex: none; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--rp-black); color: #f6f1e8; font: 400 1.25rem/1 var(--rp-serif); padding-top: .125rem; }
+.rp-wa-name { display: grid; line-height: 1.2; }
+.rp-wa-name b { font-weight: 600; font-size: .9375rem; }
+.rp-wa-name small { display: grid; font-size: .75rem; color: #667781; }
+.rp-wa-name small span { grid-area: 1 / 1; }
+.rp-st-typ { opacity: 0; color: #1fa855; }
+.rp-wa-body { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #efe7dc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' fill='none' stroke='%237a5c3e' stroke-opacity='.09' stroke-width='1.4' stroke-linecap='round'%3E%3Ccircle cx='24' cy='26' r='9'/%3E%3Cpath d='M70 18c6 4 12 4 18 0M64 30c8 5 22 5 30 0'/%3E%3Cpath d='M122 22l8 8m0-8l-8 8'/%3E%3Crect x='16' y='86' width='18' height='14' rx='3'/%3E%3Cpath d='M58 92q10-14 20 0t20 0'/%3E%3Ccircle cx='132' cy='96' r='4'/%3E%3Cpath d='M30 138l8-10 8 10M96 132h18M105 123v18'/%3E%3Ccircle cx='146' cy='146' r='7'/%3E%3C/svg%3E") 0 0 / 160px; }
+.rp-wa-col { display: flex; flex-direction: column; gap: .375rem; padding: .75rem .625rem 1rem; }
+.rp-wa-day { align-self: center; margin-bottom: .25rem; }
+.rp-wa-day span { display: block; padding: .25rem .625rem; border-radius: .5rem; background: rgba(255, 255, 255, .92); color: #54656f; font-size: .6875rem; font-weight: 500; letter-spacing: .02em; box-shadow: 0 1px .5px rgba(11, 20, 26, .1); }
+.rp-slot { position: relative; display: flex; flex-direction: column; }
+.rp-m { position: relative; max-width: 82%; padding: .375rem .5rem .3125rem .625rem; border-radius: .625rem; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); overflow-wrap: break-word; }
+.rp-m p + p, .rp-m .rp-card + p { margin-top: .25rem; }
+.rp-out { align-self: flex-end; background: #d9fdd3; border-top-right-radius: .125rem; transform-origin: 100% 100%; }
+.rp-in { align-self: flex-start; background: #fff; border-top-left-radius: .125rem; transform-origin: 0 100%; }
+.rp-meta { float: right; display: inline-flex; align-items: center; gap: .1875rem; margin: .4375rem 0 -.25rem .625rem; font-size: .6875rem; line-height: 1; color: #667781; font-variant-numeric: tabular-nums; }
+.rp-tk { position: relative; display: inline-flex; color: #8696a0; }
+.rp-tk svg { display: block; }
+.rp-tk-blue { position: absolute; inset: 0; color: #53bdeb; }
+.rp-wa-link { color: #027eb5; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+.rp-card { display: block; margin: .3125rem -.3125rem 0 -.4375rem; border-radius: .4375rem; overflow: hidden; background: #f0f2f5; }
+.rp-card-img { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: #2a211a; }
+.rp-card-img picture, .rp-card-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rp-card-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 8, 6, .35), rgba(10, 8, 6, 0) 40%, rgba(10, 8, 6, .55)); }
+.rp-card-site { position: absolute; left: 0; right: 0; top: .5rem; z-index: 1; text-align: center; color: #f6f1e8; font: 400 1.0625rem/1 var(--rp-serif); }
+.rp-card-site small { display: block; margin-bottom: .125rem; font: 500 .4375rem/1 var(--sans); letter-spacing: .32em; text-transform: uppercase; }
+.rp-card-pill { position: absolute; right: .5rem; bottom: .5rem; z-index: 1; padding: .25rem .5rem; border-radius: 999px; background: rgba(13, 11, 9, .72); color: #f6f1e8; font-size: .625rem; font-weight: 500; letter-spacing: .04em; }
+.rp-card-txt { display: grid; gap: .0625rem; padding: .4375rem .625rem .5rem; line-height: 1.3; }
+.rp-card-txt b { font-weight: 600; font-size: .8125rem; }
+.rp-card-txt span { font-size: .75rem; color: #54656f; }
+.rp-card-txt small { font-size: .6875rem; color: #8696a0; }
+.rp-photos { padding: .1875rem .1875rem .3125rem; }
+.rp-ph { display: grid; grid-template-columns: 1fr 1fr; gap: .1875rem; width: 13.5rem; max-width: 100%; }
+.rp-ph img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .4375rem; }
+.rp-photos p { padding: .25rem .3125rem 0 .4375rem; }
+.rp-typing { position: absolute; top: 0; left: 0; display: none; gap: .25rem; padding: .75rem .875rem; border-radius: .625rem; border-top-left-radius: .125rem; background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); }
+.rp-typing i { width: .4375rem; height: .4375rem; border-radius: 50%; background: #8696a0; animation: rp-dot 1.2s infinite ease-in-out; }
+.rp-typing i:nth-child(2) { animation-delay: .15s; }
+.rp-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes rp-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .45; } 30% { transform: translateY(-.25rem); opacity: 1; } }
+.rp-wa-bar { position: relative; z-index: 2; display: flex; align-items: center; gap: .625rem; padding: .5rem .75rem 1.25rem; background: rgba(246, 246, 246, .96); color: #54656f; box-shadow: 0 -1px 0 rgba(0, 0, 0, .06); }
+.rp-wa-plus { font-size: 1.5rem; line-height: 1; color: #007aff; }
+.rp-wa-in { flex: 1; padding: .375rem .75rem; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); color: #8696a0; font-size: .8125rem; }
+
+/* Live-Modus (nur mit JS + Bewegung erlaubt) */
+.rp-chat:not(.rp-chat-on) .rp-chat-steps { display: none; }
+.rp-chat-on { height: 280svh; }
+.rp-chat-on .rp-chat-stage { position: sticky; top: 0; height: 100svh; justify-content: center; padding-top: 1rem; padding-bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+.rp-chat-on .rp-phone { flex: 0 1 auto; height: min(100%, 44rem); }
+.rp-chat-on .rp-wa-col { will-change: transform; }
+.rp-chat-on [data-at], .rp-chat-on .rp-tk-blue, .rp-chat-on [data-swap], .rp-chat-on .rp-chat-steps span { opacity: 0; }
+.rp-chat-on .rp-typing { display: inline-flex; opacity: 0; }
+
+/* Abschluss nach dem Chat. Ab dem Chat weicht der feste Knopf (restaurant.js setzt .rp-cta-seen) – am Ende steht der eigene. */
+.rp-cta { padding-top: clamp(4.5rem, 16vw, 7rem); }
+.rp-cta-h { font: 300 clamp(2.75rem, 12vw, 4.25rem)/1 var(--rp-serif); letter-spacing: -.015em; color: #f6f1e8; text-wrap: balance; }
+.rp-cta-h em { font-style: italic; }
+.rp-cta .rp-price { margin-top: 1.25rem; font-size: .875rem; }
+.rp-cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: .625rem; min-height: 3.5rem; margin-top: 2rem; padding: 0 1.75rem; border-radius: 999px; background: #f6f1e8; color: var(--rp-black); font: 500 1rem/1 var(--sans); letter-spacing: .02em; text-decoration: none; white-space: nowrap; transition: transform .25s var(--ease-out); }
+.rp-cta-btn:active { transform: scale(.97); }
+.rp-cta-btn .rw-wa-ico { width: 1.375rem; height: 1.375rem; color: #1fa855; }
+.rp-dock { transition: opacity .35s var(--ease-out), transform .35s var(--ease-out); }
+.rp-cta-seen .rp-dock { opacity: 0; transform: translateY(1rem); pointer-events: none; }
+.rp-cta-seen .rp-dock .rw-wa { pointer-events: none; }
+.rp-price span { white-space: nowrap; }
+.rp-price { margin-top: .75rem; color: rgba(246, 241, 232, .82); font-size: .8125rem; }
+.rp-quote { margin: 2.25rem 0 0; }
+.rp-quote p { font: italic 400 1.1875rem/1.35 var(--rp-serif); color: rgba(246, 241, 232, .88); }
+.rp-quote figcaption { margin-top: .375rem; font-size: .75rem; letter-spacing: .04em; color: rgba(246, 241, 232, .55); }
+.rp-wlogo { display: flex; justify-content: center; width: 6.5rem; min-height: 2.75rem; align-items: center; margin: 2rem auto 0; color: rgba(246, 241, 232, .8); }
+.rp-wlogo svg { width: 100%; height: auto; }
+.rp-legal { margin-top: .5rem; font-size: .75rem; color: rgba(246, 241, 232, .45); text-wrap: balance; }
+.rp-legal a { display: inline-block; padding-block: .5rem; }
+
+/* Fester WhatsApp-Knopf = Haupt-CTA (überschreibt die alten .rw-wa-Regeln aus restaurant.css) */
+.rp-dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; justify-content: center; padding: 0 1rem calc(1rem + env(safe-area-inset-bottom)); pointer-events: none; }
+.rp-dock .rw-wa { pointer-events: auto; display: inline-flex; align-items: center; justify-content: center; gap: .625rem; width: min(100%, 22rem); max-width: none; min-height: 3.5rem; padding: 0 1.5rem; border-radius: 999px; background: rgba(13, 11, 9, .92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); color: #f6f1e8; box-shadow: 0 0 0 1px rgba(246, 241, 232, .16), 0 18px 40px -12px rgba(0, 0, 0, .55); font: 500 1rem/1 var(--sans); letter-spacing: .02em; text-decoration: none; white-space: nowrap; transition: transform .25s var(--ease-out); }
+.rp-dock .rw-wa:active { transform: scale(.97); }
+.rp-dock .rw-wa-ico { width: 1.375rem; height: 1.375rem; color: #25d366; }
+.rw-scanning .rp-dock { z-index: 85; }
+
+@media (min-width: 48rem) {
+  .rp-hero picture, .rp-hero picture img { object-position: 50% 55%; }
+  .rp-hero::after { background: linear-gradient(180deg, rgba(10, 8, 6, .5) 0%, rgba(10, 8, 6, 0) 20%), linear-gradient(90deg, rgba(10, 8, 6, .78) 0%, rgba(10, 8, 6, .45) 45%, rgba(10, 8, 6, 0) 75%); }
+  .rp-hero-txt { width: min(100% - 6rem, 72rem); padding-bottom: 6rem; }
+  .rp-hero h1 { max-width: 14ch; }
+  .rp-amb img { aspect-ratio: 21 / 9; }
+  .rp-dock { justify-content: flex-end; padding-right: 1.5rem; }
+  .rp-dock .rw-wa { width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
-<style>:root{--e-bg:#faf6ef;--e-ink:#24190f;--e-ink2:#5d4f43;--e-acc:#9c2f22;--e-acc-ink:#ffffff;--e-band:#f1e7d7}</style>
 <!-- Scan-Animation nur mit JS; lädt restaurant.js nicht, verschwindet sie nach spätestens 6 s (fail-open). -->
 <script>document.documentElement.classList.add("rw-scanning");setTimeout(function(){document.documentElement.classList.remove("rw-scanning")},6000)</script>
-<script src="../assets/js/entwurf.js" defer></script>
 <script src="../assets/js/restaurant.js" defer onerror="document.documentElement.classList.remove('rw-scanning')"></script>
 <!-- Erzeugt von scan/generate.py (Variante restaurant-whatsapp) aus trattoria-beispiel.json – nicht von Hand bearbeiten. -->
 </head>
-<body class="e-hell rw">
-<a class="e-skip" href="#inhalt">Zum Inhalt</a>
+<body class="rw">
+<a class="rp-skip" href="#inhalt">Zum Inhalt</a>
 
 <div class="rw-scan" aria-hidden="true">
   <div class="rw-scan-in">
@@ -53,131 +222,109 @@
   <button class="rw-scan-skip" type="button" tabindex="-1">Überspringen</button>
 </div>
 
-<div class="e-strip rw-strip" role="note">
-  <p><b>Ihre neue Website</b><span class="e-long"> für Trattoria Esempio</span> · Knöpfe sind hier nur zur Ansicht.</p>
-  <a class="rw-strip-logo" href="#wirth" aria-label="Gestaltet von Wirth Websites – mehr über uns"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -4 153 58" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M41.89 4.88 23.96 53.73H20.91L5.06 0.39L-1.04 -1.5V-2.77H21.92V-1.5L14.88 0.31L27.19 43.27L24.96 43.89L41.81 -3.45H45.2L63.19 43.65L61.07 43.99L72.22 0.44L64.99 -1.5V-2.77H81.31V-1.5L75.32 0.52L60.75 53.73H57.69L39.07 6.44Z"/><path d="M85.88 4.15Q84.95 4.15 84.4 3.52Q83.85 2.89 83.85 2.1Q83.85 1.3 84.4 0.73Q84.95 0.16 85.88 0.16Q86.81 0.16 87.33 0.73Q87.86 1.3 87.86 2.1Q87.86 2.89 87.33 3.52Q86.81 4.15 85.88 4.15ZM87.51 6.84 87.48 9.67V21.1L89.63 21.62V22.05H82.57V21.62L84.71 21.1V9.84Q84.54 9.72 84.21 9.5Q83.88 9.28 83.45 9.02Q83.03 8.76 82.57 8.49V8.19L87.37 6.84ZM100.24 7Q100.94 7 101.33 7.39Q101.72 7.77 101.72 8.43Q101.72 9.21 101.22 9.7Q100.73 10.19 99.96 10.19Q99.62 10.19 99.27 10.09Q98.93 9.99 98.55 9.9Q98.17 9.81 97.72 9.81Q97.3 9.81 96.9 9.95Q96.51 10.1 96.13 10.34Q95.75 10.59 95.38 10.93L95.3 10.3Q96.37 9.22 97.15 8.56Q97.93 7.91 98.47 7.57Q99.01 7.23 99.43 7.12Q99.85 7 100.24 7ZM95.59 9.73V21.1L98 21.62V22.05H90.68V21.62L92.83 21.1V9.88Q92.63 9.73 92.34 9.56Q92.05 9.38 91.64 9.13Q91.24 8.88 90.68 8.57V8.26L95.43 6.84H95.56ZM107.08 18.16Q107.08 19.23 107.75 19.78Q108.42 20.34 109.57 20.34Q110.2 20.34 110.9 20.22Q111.6 20.1 112.5 19.83V20.32Q111.22 21.12 110.38 21.56Q109.55 22.01 108.94 22.18Q108.34 22.36 107.69 22.36Q106.78 22.36 106.01 21.97Q105.24 21.58 104.77 20.74Q104.3 19.9 104.3 18.57V9.27L102.44 8.06V7.84Q102.62 7.7 102.95 7.49Q103.27 7.29 103.69 7.01Q104.11 6.73 104.61 6.39Q105.11 6.06 105.68 5.68Q106.25 5.3 106.86 4.91H107.08V7.78ZM106.1 8.88V7.26H112.08L111.83 8.88ZM122.33 21.62 124.48 21.1V12.05Q124.48 11.09 124.14 10.45Q123.8 9.81 123.11 9.48Q122.41 9.15 121.32 9.15Q120.16 9.15 119.12 9.49Q118.08 9.83 117.45 10.24L117.17 9.88Q118.25 9 119.09 8.43Q119.92 7.85 120.59 7.54Q121.27 7.22 121.9 7.09Q122.53 6.96 123.24 6.96Q125.35 6.96 126.31 8.14Q127.27 9.31 127.27 11.83V21.1L129.41 21.62V22.05H122.33ZM119.92 22.05H112.85V21.62L115 21.1V2.75Q114.8 2.61 114.45 2.43Q114.11 2.25 113.64 2.02Q113.17 1.78 112.58 1.5V1.22L117.68 0H117.81L117.78 7.64V21.1L119.92 21.62ZM84.5 39.31Q83.56 39.31 82.76 39.97Q81.95 40.62 81.32 41.67Q80.69 42.72 80.26 43.97Q79.82 45.22 79.59 46.45Q79.36 47.67 79.36 48.63Q79.36 50.2 79.95 50.86Q80.54 51.52 81.59 51.52Q82.36 51.52 83.09 51.2Q83.83 50.88 84.56 50.09Q85.28 49.3 86 47.91L86.47 47.92Q85.6 50.04 84.71 51.22Q83.81 52.41 82.85 52.88Q81.89 53.35 80.78 53.35Q79.61 53.35 78.76 52.9Q77.9 52.45 77.45 51.57Q76.99 50.68 76.99 49.41Q76.99 47.82 77.39 46.25Q77.8 44.68 78.55 43.3Q79.3 41.91 80.3 40.84Q81.31 39.76 82.5 39.15Q83.69 38.53 85 38.53Q86.05 38.53 86.69 38.89Q87.34 39.24 87.65 39.83Q87.95 40.42 87.95 41.11Q87.95 41.76 87.73 42.43Q87.5 43.09 87.07 43.62Q86.44 43.92 85.54 44.29Q84.64 44.65 83.58 45.03Q82.52 45.4 81.38 45.77Q80.24 46.14 79.12 46.45L79.19 45.72Q80.81 45.22 81.97 44.76Q83.12 44.29 83.89 43.83Q84.65 43.36 85.1 42.89Q85.54 42.42 85.72 41.92Q85.9 41.41 85.9 40.87Q85.9 40.41 85.73 40.06Q85.57 39.7 85.26 39.51Q84.95 39.31 84.5 39.31ZM91.07 49.09Q90.92 49.57 90.86 50.01Q90.79 50.44 90.79 50.8Q90.79 51.69 91.19 52.15Q91.6 52.62 92.38 52.62Q93.23 52.62 94.16 52Q95.09 51.37 95.95 50.32Q96.8 49.26 97.49 47.94Q98.17 46.62 98.57 45.19Q98.96 43.77 98.96 42.42Q98.96 41.44 98.57 40.9Q98.17 40.36 97.34 40.36Q96.7 40.36 96.02 40.72Q95.35 41.07 94.72 41.65Q94.09 42.24 93.56 42.92Q93.04 43.6 92.66 44.28Q92.29 44.95 92.14 45.49ZM93.52 33.75Q93.23 33.52 92.92 33.31Q92.6 33.09 92.24 32.86Q91.87 32.64 91.43 32.41L91.48 32.2L96.25 31.23H96.43L92.57 44.02L92.42 43.69Q93.58 41.91 94.66 40.77Q95.74 39.63 96.72 39.08Q97.7 38.53 98.57 38.53Q100 38.53 100.76 39.46Q101.51 40.38 101.51 41.91Q101.51 43.47 100.99 45.09Q100.46 46.71 99.54 48.19Q98.62 49.66 97.44 50.83Q96.26 51.99 94.94 52.67Q93.62 53.35 92.3 53.35Q90.64 53.35 89.75 52.44Q88.87 51.52 88.87 49.99Q88.87 49.54 88.95 49.05Q89.03 48.55 89.18 48.03ZM103.36 49.86Q103.48 50.43 103.63 50.86Q103.78 51.3 104.08 51.73Q104.39 52.18 104.72 52.33Q105.04 52.48 105.41 52.48Q106.21 52.48 106.79 52.22Q107.36 51.96 107.68 51.45Q107.99 50.94 107.99 50.2Q107.99 49.75 107.83 49.25Q107.66 48.75 107.28 48.13Q106.9 47.5 106.21 46.66Q105.53 45.82 105.14 45.16Q104.75 44.49 104.6 43.91Q104.45 43.33 104.45 42.79Q104.45 41.62 105.04 40.66Q105.62 39.69 106.7 39.11Q107.77 38.53 109.22 38.53Q110.27 38.53 110.9 38.79Q111.52 39.04 111.8 39.47Q112.09 39.9 112.09 40.45Q112.09 40.86 111.9 41.17Q111.71 41.47 111.32 41.64Q110.92 41.8 110.27 41.8Q110.24 41.2 110.11 40.82Q109.97 40.44 109.69 40.06Q109.42 39.7 109.08 39.53Q108.74 39.36 108.32 39.36Q107.32 39.36 106.72 39.89Q106.12 40.42 106.12 41.43Q106.12 41.82 106.27 42.28Q106.42 42.73 106.79 43.35Q107.17 43.96 107.83 44.83Q108.5 45.7 108.89 46.4Q109.27 47.1 109.43 47.68Q109.6 48.25 109.6 48.81Q109.6 50.13 108.93 51.15Q108.26 52.17 107.11 52.76Q105.95 53.35 104.47 53.35Q103.37 53.35 102.7 53.08Q102.02 52.81 101.72 52.36Q101.41 51.9 101.41 51.34Q101.41 50.86 101.62 50.53Q101.83 50.2 102.26 50.03Q102.7 49.86 103.36 49.86ZM112.51 52.05 116.87 40.18 117.22 40.57Q116.78 40.51 116.15 40.75Q115.52 40.98 114.71 41.59Q113.89 42.19 112.87 43.29L112.58 43.03Q113.77 41.37 114.74 40.39Q115.72 39.4 116.57 38.97Q117.41 38.53 118.15 38.53Q118.91 38.53 119.17 38.88Q119.42 39.22 119.18 39.84L114.83 51.85L114.52 51.3Q114.92 51.43 115.52 51.27Q116.12 51.1 116.99 50.51Q117.85 49.92 118.99 48.79L119.26 49.06Q118.07 50.62 117.07 51.57Q116.06 52.51 115.23 52.93Q114.4 53.35 113.68 53.35Q112.82 53.35 112.54 53.05Q112.25 52.74 112.51 52.05ZM117.98 33.21Q117.98 32.73 118.21 32.33Q118.43 31.93 118.83 31.69Q119.23 31.45 119.78 31.45Q120.61 31.45 121.09 31.97Q121.57 32.49 121.57 33.21Q121.57 33.7 121.35 34.12Q121.13 34.53 120.74 34.78Q120.34 35.04 119.78 35.04Q118.96 35.04 118.47 34.49Q117.98 33.94 117.98 33.21ZM121.9 39.81 122.15 38.83H130.12L129.91 39.81ZM123.77 49.69Q123.68 49.99 123.63 50.2Q123.58 50.41 123.56 50.56Q123.53 50.71 123.53 50.83Q123.53 51.1 123.67 51.22Q123.8 51.34 124.06 51.34Q124.4 51.34 124.96 51.04Q125.51 50.74 126.28 50.05Q127.04 49.35 127.99 48.15L128.33 48.39Q127.42 49.78 126.62 50.74Q125.81 51.69 125.12 52.27Q124.42 52.84 123.82 53.09Q123.22 53.34 122.69 53.34Q122.03 53.34 121.61 52.96Q121.19 52.57 121.19 51.66Q121.19 51.31 121.28 50.78Q121.36 50.25 121.66 49.3L125.81 35.62H128.09ZM137.11 39.31Q136.16 39.31 135.36 39.97Q134.56 40.62 133.93 41.67Q133.3 42.72 132.86 43.97Q132.43 45.22 132.2 46.45Q131.96 47.67 131.96 48.63Q131.96 50.2 132.56 50.86Q133.15 51.52 134.2 51.52Q134.96 51.52 135.7 51.2Q136.43 50.88 137.16 50.09Q137.89 49.3 138.61 47.91L139.07 47.92Q138.2 50.04 137.31 51.22Q136.42 52.41 135.46 52.88Q134.5 53.35 133.39 53.35Q132.22 53.35 131.36 52.9Q130.51 52.45 130.05 51.57Q129.59 50.68 129.59 49.41Q129.59 47.82 130 46.25Q130.4 44.68 131.15 43.3Q131.9 41.91 132.91 40.84Q133.91 39.76 135.11 39.15Q136.3 38.53 137.6 38.53Q138.65 38.53 139.3 38.89Q139.94 39.24 140.25 39.83Q140.56 40.42 140.56 41.11Q140.56 41.76 140.33 42.43Q140.11 43.09 139.67 43.62Q139.04 43.92 138.14 44.29Q137.24 44.65 136.19 45.03Q135.13 45.4 133.99 45.77Q132.85 46.14 131.72 46.45L131.8 45.72Q133.42 45.22 134.57 44.76Q135.73 44.29 136.49 43.83Q137.26 43.36 137.7 42.89Q138.14 42.42 138.32 41.92Q138.5 41.41 138.5 40.87Q138.5 40.41 138.34 40.06Q138.17 39.7 137.87 39.51Q137.56 39.31 137.11 39.31ZM142.06 49.86Q142.18 50.43 142.33 50.86Q142.48 51.3 142.78 51.73Q143.09 52.18 143.42 52.33Q143.74 52.48 144.11 52.48Q144.91 52.48 145.49 52.22Q146.06 51.96 146.38 51.45Q146.69 50.94 146.69 50.2Q146.69 49.75 146.53 49.25Q146.36 48.75 145.98 48.13Q145.6 47.5 144.91 46.66Q144.23 45.82 143.84 45.16Q143.45 44.49 143.3 43.91Q143.15 43.33 143.15 42.79Q143.15 41.62 143.74 40.66Q144.32 39.69 145.4 39.11Q146.47 38.53 147.92 38.53Q148.97 38.53 149.6 38.79Q150.22 39.04 150.5 39.47Q150.79 39.9 150.79 40.45Q150.79 40.86 150.6 41.17Q150.41 41.47 150.02 41.64Q149.62 41.8 148.97 41.8Q148.94 41.2 148.81 40.82Q148.67 40.44 148.39 40.06Q148.12 39.7 147.78 39.53Q147.44 39.36 147.02 39.36Q146.02 39.36 145.42 39.89Q144.82 40.42 144.82 41.43Q144.82 41.82 144.97 42.28Q145.12 42.73 145.49 43.35Q145.87 43.96 146.53 44.83Q147.2 45.7 147.59 46.4Q147.97 47.1 148.13 47.68Q148.3 48.25 148.3 48.81Q148.3 50.13 147.63 51.15Q146.96 52.17 145.81 52.76Q144.65 53.35 143.17 53.35Q142.07 53.35 141.4 53.08Q140.72 52.81 140.42 52.36Q140.11 51.9 140.11 51.34Q140.11 50.86 140.32 50.53Q140.53 50.2 140.96 50.03Q141.4 49.86 142.06 49.86Z"/></g></svg>
-</a>
-</div>
-
-<header class="e-head">
-  <div class="e-wrap">
-    <a class="e-logo" href="#start"><span>Esempio</span><small>Trattoria</small></a>
-    <nav class="e-nav" id="e-menu" aria-label="Hauptmenü">
-      <a href="#karte">Speisekarte</a><a href="#restaurant">Restaurant</a><a href="#fragen">Fragen</a><a href="#kontakt">Zeiten &amp; Kontakt</a>
-      <a class="e-btn e-btn-acc e-nav-cta" href="#kontakt" data-demo="tel">Tisch reservieren</a>
-    </nav>
-    <a class="e-btn e-btn-acc e-head-tel" href="#kontakt" data-demo="tel"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M6.6 2.5H4.2A1.7 1.7 0 0 0 2.5 4.3C2.9 11.6 8.4 17.1 15.7 17.5a1.7 1.7 0 0 0 1.8-1.7v-2.4l-3.3-1.3-1.6 1.6a10.6 10.6 0 0 1-5.3-5.3l1.6-1.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>06221 98 76 54</span></a>
-    <button class="e-burger" type="button" aria-expanded="false" aria-controls="e-menu"><span class="vh">Menü</span><i></i><i></i></button>
-  </div>
-</header>
+<p class="rp-bar" role="note"><span><b><span class="rp-bar-dot" aria-hidden="true">●</span>Ihre Website ist bereits online</b> <span class="rp-bar-sub">· 2 Tage kostenlos</span></span></p>
 
 <main id="inhalt">
-  <section class="e-hero" id="start" aria-labelledby="e-h1">
-    <div class="e-wrap e-hero-grid">
-      <div class="e-hero-txt">
-        <p class="e-eyebrow">Trattoria in der Heidelberger Altstadt</p>
-        <h1 id="e-h1">Hausgemachte Pasta. Mitten in der Altstadt.</h1>
-        <p class="e-sub">Frische Pasta jeden Morgen, Gerichte aus Apulien und ein Tisch für Sie – mittags schnell, abends in Ruhe.</p>
-        <div class="e-ctas">
-          <a class="e-btn e-btn-acc" href="#kontakt" data-demo="tel">Tisch reservieren</a>
-          <a class="e-btn e-btn-line" href="#karte">Speisekarte ansehen</a>
-        </div>
-      </div>
-      <figure class="e-hero-pic"><picture><source type="image/webp" srcset="img/heidelberg-1400.webp 1400w, img/heidelberg-800.webp 800w" sizes="(min-width: 60rem) 50vw, 100vw"><img src="img/heidelberg-1400.jpg" width="1400" height="933" alt="Blick über die Altstadt von Heidelberg und den Neckar" fetchpriority="high"></picture></figure>
+  <header class="rp-hero" id="start">
+    <picture>
+      <source type="image/webp" media="(max-width: 47.99rem)" srcset="img/pasta-teller-hoch.webp">
+      <source type="image/jpeg" media="(max-width: 47.99rem)" srcset="img/pasta-teller-hoch.jpg">
+      <source type="image/webp" srcset="img/pasta-teller-1400.webp 1400w, img/pasta-teller-800.webp 800w" sizes="100vw">
+      <img src="img/pasta-teller-1400.jpg" width="1400" height="1023" alt="Teller mit Pappardelle, Pilzen, Salbei und Parmesan auf dunklem Holztisch" fetchpriority="high">
+    </picture>
+    <a class="rp-mark" href="#start" translate="no"><small>Trattoria</small><span>Esempio</span></a>
+    <div class="rp-wrap rp-hero-txt">
+      <p class="rp-kicker">Cucina pugliese · Heidelberg</p>
+      <h1>Hausgemachte Pasta. Mitten in der Altstadt.</h1>
+      <a class="rp-hero-link" href="#karte">Aus der Küche</a>
     </div>
-    <ul class="e-wrap e-facts"><li><b>Pasta jeden Tag frisch</b><span>aus der eigenen Küche</span></li><li><b>Mittagstisch</b><span>Di–Fr ab 12 Uhr</span></li><li><b>Altstadt Heidelberg</b><span>fünf Minuten vom Bismarckplatz</span></li></ul>
-  </section>
+  </header>
 
-  <section class="e-sec e-band" id="karte" aria-labelledby="rw-karte">
-    <div class="e-wrap">
-      <p class="e-eyebrow">Speisekarte</p>
-      <h2 id="rw-karte">Aus unserer Karte.</h2>
-      <div class="rw-menu"><div><h3>Antipasti</h3><ul><li><b>Bruschetta al pomodoro</b><span>Geröstetes Brot, Tomaten, Basilikum, Olivenöl</span></li><li><b>Vitello tonnato</b><span>Kalbfleisch, Thunfischcreme, Kapern</span></li><li><b>Burrata</b><span>Mit Kirschtomaten und Rucola</span></li></ul></div><div><h3>Pasta</h3><ul><li><b>Orecchiette alle cime di rapa</b><span>Stängelkohl, Knoblauch, Peperoncino</span></li><li><b>Tagliatelle al ragù</b><span>Sechs Stunden geschmortes Ragù</span></li><li><b>Spaghetti alle vongole</b><span>Venusmuscheln, Weißwein, Petersilie</span></li></ul></div><div><h3>Dolci</h3><ul><li><b>Tiramisù della casa</b><span>Nach dem Rezept der Familie</span></li><li><b>Panna cotta</b><span>Mit Beerenragout</span></li></ul></div></div>
-      <p class="e-note">Auszug – die ganze Karte und den Mittagstisch der Woche zeigen wir später hier.</p>
-    </div>
-  </section>
-
-  <section class="e-sec e-about" id="restaurant" aria-labelledby="e-ueb">
-    <div class="e-wrap e-about-grid">
-      <figure class="e-about-pic"><picture><source type="image/webp" srcset="img/runder-tisch-800.webp 800w, img/runder-tisch-1400.webp 1400w" sizes="(min-width: 60rem) 34rem, 100vw"><img src="img/runder-tisch-800.jpg" width="800" height="533" alt="Runder Tisch in einem hellen Raum" loading="lazy" decoding="async"></picture></figure>
-      <div>
-        <p class="e-eyebrow">Das Restaurant</p>
-        <h2 id="e-ueb">Eine Familie, eine Küche.</h2>
-        <p class="e-lead">Giulia und Marco Esempio kochen, wie in Apulien zu Hause gekocht wird: wenige Zutaten, gut ausgesucht, und Zeit für die Pasta. Seit über zehn Jahren in der Heidelberger Altstadt.</p>
+  <section class="rp-sec" id="karte" aria-labelledby="rp-karte">
+    <div class="rp-wrap">
+      <div class="rp-head">
+        <p class="rp-kicker">Aus der Küche</p>
+        <h2 id="rp-karte">Unsere Empfehlungen</h2>
+        <i class="rp-orn" aria-hidden="true"></i>
       </div>
+      <div class="rp-dishes"><div class="rp-dish"><h3>Burrata</h3><i aria-hidden="true"></i><data value="12,50 €">12,50 €</data></div><div class="rp-dish"><h3>Orecchiette alle cime di rapa</h3><i aria-hidden="true"></i><data value="15,90 €">15,90 €</data></div><div class="rp-dish"><h3>Tagliatelle al ragù</h3><i aria-hidden="true"></i><data value="16,50 €">16,50 €</data></div><div class="rp-dish"><h3>Tiramisù della casa</h3><i aria-hidden="true"></i><data value="7,50 €">7,50 €</data></div></div>
+      <p class="rp-note">Pasta jeden Morgen frisch.</p>
     </div>
   </section>
 
-  <section class="e-sec" id="fragen" aria-labelledby="e-faq">
-    <div class="e-wrap e-faq-wrap">
-      <p class="e-eyebrow">Gut zu wissen</p>
-      <h2 id="e-faq">Häufige Fragen.</h2>
-      <div class="e-faq"><details><summary>Kann ich einen Tisch reservieren?</summary><p>Ja, telefonisch während der Öffnungszeiten. Für Gruppen ab acht Personen bitte ein paar Tage vorher.</p></details><details><summary>Gibt es vegetarische Gerichte?</summary><p>Ja, auf der Karte sind immer mehrere vegetarische Antipasti und Pasta-Gerichte.</p></details><details><summary>Kann ich Essen abholen?</summary><p>Ja. Rufen Sie kurz an, dann ist Ihre Bestellung in etwa 20 Minuten fertig.</p></details></div>
-    </div>
-  </section>
+  <figure class="rp-amb" id="restaurant">
+    <picture><source type="image/webp" srcset="img/gaststube-kerzen-800.webp 800w, img/gaststube-kerzen-1400.webp 1400w" sizes="100vw"><img src="img/gaststube-kerzen-800.jpg" width="800" height="506" alt="Gedeckte Tische in einer stillen Gaststube mit weißen Steinwänden und Fensterlicht" loading="lazy" decoding="async"></picture>
+    <figcaption>Eine Familie, eine Küche. Seit über zehn Jahren in der Altstadt.</figcaption>
+  </figure>
 
-  <section class="e-sec e-contact" id="kontakt" aria-labelledby="e-kon">
-    <div class="e-wrap e-contact-grid">
-      <div>
-        <p class="e-eyebrow">Zeiten &amp; Kontakt</p>
-        <h2 id="e-kon">Wir freuen uns auf Sie.</h2>
-        <a class="e-big-tel" href="#kontakt" data-demo="tel">06221 98 76 54</a>
-        <dl class="e-data">
-          <div><dt>Adresse</dt><dd>Beispielgasse 7, 69117 Heidelberg</dd></div>
-          <div><dt>E-Mail</dt><dd><a href="#kontakt" data-demo="mail">ciao@trattoria-esempio.de</a></dd></div>
-        </dl>
+  <section class="rp-sec rp-info" id="kontakt" aria-labelledby="rp-zeiten">
+    <div class="rp-wrap">
+      <div class="rp-head">
+        <p class="rp-kicker">Besuchen Sie uns</p>
+        <h2 id="rp-zeiten">Öffnungszeiten</h2>
+        <i class="rp-orn" aria-hidden="true"></i>
       </div>
-      <div class="rw-hours">
-        <h3>Öffnungszeiten</h3>
-        <dl class="e-data"><div><dt>Di–Fr</dt><dd>12:00–14:30 und 17:30–22:30 Uhr</dd></div><div><dt>Sa–So</dt><dd>12:00–22:30 Uhr</dd></div><div><dt>Mo</dt><dd>Ruhetag</dd></div></dl>
-        <a class="e-btn e-btn-acc" href="#kontakt" data-demo="tel">Tisch reservieren</a>
-      </div>
+      <dl class="rp-hours"><div><dt>Di–Fr</dt><dd>12:00–14:30 und 17:30–22:30 Uhr</dd></div><div><dt>Sa–So</dt><dd>12:00–22:30 Uhr</dd></div><div><dt>Mo</dt><dd>Ruhetag</dd></div></dl>
+      <address class="rp-addr">Beispielgasse 7<br>69117 Heidelberg<span>06221 98 76 54</span></address>
     </div>
   </section>
 </main>
 
-<aside class="e-wrap rw-mini" aria-label="Diese Website von Wirth Websites">
-  <ol class="rw-mini-steps">
-    <li title="Schreiben Sie uns per WhatsApp"><span class="rw-mini-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18.5 5.2 15A7.5 7.5 0 1 1 8.6 18l-4.6.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b aria-hidden="true">1</b></span>Per WhatsApp schreiben</li>
-    <li title="Änderungen einfach per Nachricht"><span class="rw-mini-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 5.5 18.5 9.5M4.5 19.5l1-4.2L15.8 5a1.4 1.4 0 0 1 2 0l1.2 1.2a1.4 1.4 0 0 1 0 2L8.7 18.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg><b aria-hidden="true">2</b></span>Änderungen per Nachricht</li>
-    <li title="Fertig – Ihre Seite ist online"><span class="rw-mini-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b aria-hidden="true">3</b></span>Fertig – online</li>
-  </ol>
-  <p class="rw-mini-badge">2 Tage kostenlos testen</p>
-  <p class="rw-mini-price">150 € einmalig + 49,99 €/Monat · monatlich kündbar</p>
-  <div class="rw-mini-quote"><img src="../assets/img/alexander-wirth-160.jpg" width="160" height="160" alt="Alexander Wirth" loading="lazy" decoding="async"><p>„Schnell, unkompliziert und endlich professionell.“ – Liane</p></div>
-</aside>
+<footer class="rp-foot">
+  <div class="rp-wrap">
+    <p class="rp-foot-mark" translate="no">Trattoria Esempio</p>
+    <p class="rp-foot-links"><a href="#start">Impressum</a><a href="#start">Datenschutz</a></p>
 
-<footer class="e-foot">
-  <div class="e-wrap e-foot-grid">
-    <div><span class="e-logo e-logo-foot"><span>Esempio</span><small>Trattoria</small></span><p>Beispielgasse 7 · 69117 Heidelberg</p></div>
-    <p>Giulia und Marco Esempio<br>06221 98 76 54 · ciao@trattoria-esempio.de</p>
-    <p><a href="#kontakt" data-demo="link">Impressum</a> · <a href="#kontakt" data-demo="link">Datenschutz</a></p>
+    <aside class="rp-wirth" id="wirth" aria-label="Diese Website von Wirth Websites">
+    <section class="rp-chat" aria-labelledby="rp-chat-h">
+      <h2 class="vh" id="rp-chat-h">So geht’s</h2>
+      <p class="vh">Sie schreiben uns per WhatsApp. Wir schicken Ihnen den Link zu Ihrer neuen Website. Sie schicken uns Ihre Fotos – kurz darauf sind sie eingebaut.</p>
+      <div class="rp-chat-stage" aria-hidden="true">
+        <p class="rp-kicker rp-chat-kick">So geht’s</p>
+        <p class="rp-chat-steps"><span data-step="0">Sie schreiben uns</span><span data-step=".22">Wir schicken Ihre Seite</span><span data-step=".38">Sie schicken Fotos</span><span data-step=".84">Fertig</span></p>
+        <div class="rp-phone"><div class="rp-screen">
+          <i class="rp-island"></i>
+          <div class="rp-wa-head">
+            <svg class="rp-wa-back" viewBox="0 0 12 20" width="12" height="20"><path d="M10 2 2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="rp-wa-ava">W</span>
+            <span class="rp-wa-name"><b>Wirth Websites</b><small><span class="rp-st-on">online</span><span class="rp-st-typ">schreibt …</span></small></span>
+          </div>
+          <div class="rp-wa-body"><div class="rp-wa-col">
+            <p class="rp-wa-day"><span>Heute</span></p>
+            <div class="rp-m rp-out" data-at=".04"><p>Hey 👋<span class="rp-meta">12:41<span class="rp-tk" data-read=".12"><svg viewBox="0 0 16 11" width="16" height="11"><path d="M11.07.65 10.4.1a.46.46 0 0 0-.65.08L4.56 6.61 2.4 4.6a.46.46 0 0 0-.65.02l-.52.56a.46.46 0 0 0 .02.65l2.96 2.76a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Zm3.8 0-.67-.55a.46.46 0 0 0-.65.08L8.36 6.61l-.6-.56-.97 1.12 1.27 1.18a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Z" fill="currentColor"/></svg><span class="rp-tk-blue"><svg viewBox="0 0 16 11" width="16" height="11"><path d="M11.07.65 10.4.1a.46.46 0 0 0-.65.08L4.56 6.61 2.4 4.6a.46.46 0 0 0-.65.02l-.52.56a.46.46 0 0 0 .02.65l2.96 2.76a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Zm3.8 0-.67-.55a.46.46 0 0 0-.65.08L8.36 6.61l-.6-.56-.97 1.12 1.27 1.18a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Z" fill="currentColor"/></svg></span></span></span></p></div>
+            <div class="rp-slot">
+              <span class="rp-typing" data-from=".14" data-to=".25"><i></i><i></i><i></i></span>
+              <div class="rp-m rp-in" data-at=".25"><p>Hallo! Hier ist Ihre neue Seite:</p><span class="rp-card"><span class="rp-card-img"><picture><source type="image/webp" srcset="img/pasta-teller-800.webp"><img src="img/pasta-teller-800.jpg" width="800" height="1023" alt="" loading="lazy" decoding="async"></picture><span class="rp-card-site"><small>Trattoria</small>Esempio</span></span><span class="rp-card-txt"><b translate="no">Trattoria Esempio</b><span>Hausgemachte Pasta. Mitten in der Altstadt.</span><small>wirthwebsites.de</small></span></span><p><span class="rp-wa-link">wirthwebsites.de/v/trattoria-beispiel</span><span class="rp-meta">12:42</span></p></div>
+            </div>
+            <div class="rp-m rp-out rp-photos" data-at=".40">
+              <span class="rp-ph"><picture><source type="image/webp" srcset="img/chat-1.webp"><img src="img/chat-1.jpg" width="720" height="720" alt="" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="img/chat-2.webp"><img src="img/chat-2.jpg" width="720" height="720" alt="" loading="lazy" decoding="async"></picture></span>
+              <p>Bitte die Bilder rein 😊<span class="rp-meta">12:44<span class="rp-tk" data-read=".52"><svg viewBox="0 0 16 11" width="16" height="11"><path d="M11.07.65 10.4.1a.46.46 0 0 0-.65.08L4.56 6.61 2.4 4.6a.46.46 0 0 0-.65.02l-.52.56a.46.46 0 0 0 .02.65l2.96 2.76a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Zm3.8 0-.67-.55a.46.46 0 0 0-.65.08L8.36 6.61l-.6-.56-.97 1.12 1.27 1.18a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Z" fill="currentColor"/></svg><span class="rp-tk-blue"><svg viewBox="0 0 16 11" width="16" height="11"><path d="M11.07.65 10.4.1a.46.46 0 0 0-.65.08L4.56 6.61 2.4 4.6a.46.46 0 0 0-.65.02l-.52.56a.46.46 0 0 0 .02.65l2.96 2.76a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Zm3.8 0-.67-.55a.46.46 0 0 0-.65.08L8.36 6.61l-.6-.56-.97 1.12 1.27 1.18a.46.46 0 0 0 .67-.04l6.27-7.24a.46.46 0 0 0-.08-.66Z" fill="currentColor"/></svg></span></span></span></p>
+            </div>
+            <div class="rp-slot">
+              <span class="rp-typing" data-from=".55" data-to=".66"><i></i><i></i><i></i></span>
+              <div class="rp-m rp-in" data-at=".66"><p>Schon erledigt ✓</p><span class="rp-card"><span class="rp-card-img"><picture><source type="image/webp" srcset="img/pasta-teller-800.webp"><img src="img/pasta-teller-800.jpg" width="800" height="1023" alt="" loading="lazy" decoding="async"></picture><picture class="rp-card-new" data-swap=".74"><source type="image/webp" srcset="img/chat-1.webp"><img src="img/chat-1.jpg" width="720" height="720" alt="" loading="lazy" decoding="async"></picture><span class="rp-card-pill" data-swap=".76">Aktualisiert</span><span class="rp-card-site"><small>Trattoria</small>Esempio</span></span><span class="rp-card-txt"><b translate="no">Trattoria Esempio</b><span>Hausgemachte Pasta. Mitten in der Altstadt.</span><small>wirthwebsites.de</small></span></span><p><span class="rp-wa-link">wirthwebsites.de/v/trattoria-beispiel</span><span class="rp-meta">12:45</span></p></div>
+            </div>
+          </div></div>
+          <div class="rp-wa-bar"><span class="rp-wa-plus">+</span><span class="rp-wa-in">Nachricht</span><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V21h2v-2.07A7 7 0 0 0 19 12h-2Z" fill="currentColor"/></svg></div>
+        </div></div>
+      </div>
+    </section>
+
+    <div class="rp-cta">
+      <p class="rp-cta-h">So einfach geht’s <em>bei uns.</em></p>
+      <p class="rp-price"><span>150 € einmalig</span> + <span>49,99 €/Monat ·</span> <span>monatlich kündbar</span></p>
+      <a class="rw-wa rp-cta-btn" href="https://wa.me/4915100000000?text=Hallo%2C%20ich%20habe%20meine%20neue%20Website%20gesehen%3A%20https%3A%2F%2Fsaschaalexanderwirth.github.io%2Fwirthwebsites-preview%2Fscan%2Ftrattoria-beispiel%2F" data-wa="4915100000000" data-wa-text="Hallo, ich habe meine neue Website gesehen: " target="_blank" rel="noopener"><svg class="rw-wa-ico" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.28-.2-.57-.35zm-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg><span>Per WhatsApp schreiben</span></a>
+    </div>
+      <figure class="rp-quote"><blockquote><p>„Schnell, unkompliziert und endlich professionell.“</p></blockquote><figcaption>Liane, Kundin von Wirth Websites</figcaption></figure>
+      <a class="rp-wlogo" href="https://wirthwebsites.de/" aria-label="Wirth Websites"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -4 153 58" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M41.89 4.88 23.96 53.73H20.91L5.06 0.39L-1.04 -1.5V-2.77H21.92V-1.5L14.88 0.31L27.19 43.27L24.96 43.89L41.81 -3.45H45.2L63.19 43.65L61.07 43.99L72.22 0.44L64.99 -1.5V-2.77H81.31V-1.5L75.32 0.52L60.75 53.73H57.69L39.07 6.44Z"/><path d="M85.88 4.15Q84.95 4.15 84.4 3.52Q83.85 2.89 83.85 2.1Q83.85 1.3 84.4 0.73Q84.95 0.16 85.88 0.16Q86.81 0.16 87.33 0.73Q87.86 1.3 87.86 2.1Q87.86 2.89 87.33 3.52Q86.81 4.15 85.88 4.15ZM87.51 6.84 87.48 9.67V21.1L89.63 21.62V22.05H82.57V21.62L84.71 21.1V9.84Q84.54 9.72 84.21 9.5Q83.88 9.28 83.45 9.02Q83.03 8.76 82.57 8.49V8.19L87.37 6.84ZM100.24 7Q100.94 7 101.33 7.39Q101.72 7.77 101.72 8.43Q101.72 9.21 101.22 9.7Q100.73 10.19 99.96 10.19Q99.62 10.19 99.27 10.09Q98.93 9.99 98.55 9.9Q98.17 9.81 97.72 9.81Q97.3 9.81 96.9 9.95Q96.51 10.1 96.13 10.34Q95.75 10.59 95.38 10.93L95.3 10.3Q96.37 9.22 97.15 8.56Q97.93 7.91 98.47 7.57Q99.01 7.23 99.43 7.12Q99.85 7 100.24 7ZM95.59 9.73V21.1L98 21.62V22.05H90.68V21.62L92.83 21.1V9.88Q92.63 9.73 92.34 9.56Q92.05 9.38 91.64 9.13Q91.24 8.88 90.68 8.57V8.26L95.43 6.84H95.56ZM107.08 18.16Q107.08 19.23 107.75 19.78Q108.42 20.34 109.57 20.34Q110.2 20.34 110.9 20.22Q111.6 20.1 112.5 19.83V20.32Q111.22 21.12 110.38 21.56Q109.55 22.01 108.94 22.18Q108.34 22.36 107.69 22.36Q106.78 22.36 106.01 21.97Q105.24 21.58 104.77 20.74Q104.3 19.9 104.3 18.57V9.27L102.44 8.06V7.84Q102.62 7.7 102.95 7.49Q103.27 7.29 103.69 7.01Q104.11 6.73 104.61 6.39Q105.11 6.06 105.68 5.68Q106.25 5.3 106.86 4.91H107.08V7.78ZM106.1 8.88V7.26H112.08L111.83 8.88ZM122.33 21.62 124.48 21.1V12.05Q124.48 11.09 124.14 10.45Q123.8 9.81 123.11 9.48Q122.41 9.15 121.32 9.15Q120.16 9.15 119.12 9.49Q118.08 9.83 117.45 10.24L117.17 9.88Q118.25 9 119.09 8.43Q119.92 7.85 120.59 7.54Q121.27 7.22 121.9 7.09Q122.53 6.96 123.24 6.96Q125.35 6.96 126.31 8.14Q127.27 9.31 127.27 11.83V21.1L129.41 21.62V22.05H122.33ZM119.92 22.05H112.85V21.62L115 21.1V2.75Q114.8 2.61 114.45 2.43Q114.11 2.25 113.64 2.02Q113.17 1.78 112.58 1.5V1.22L117.68 0H117.81L117.78 7.64V21.1L119.92 21.62ZM84.5 39.31Q83.56 39.31 82.76 39.97Q81.95 40.62 81.32 41.67Q80.69 42.72 80.26 43.97Q79.82 45.22 79.59 46.45Q79.36 47.67 79.36 48.63Q79.36 50.2 79.95 50.86Q80.54 51.52 81.59 51.52Q82.36 51.52 83.09 51.2Q83.83 50.88 84.56 50.09Q85.28 49.3 86 47.91L86.47 47.92Q85.6 50.04 84.71 51.22Q83.81 52.41 82.85 52.88Q81.89 53.35 80.78 53.35Q79.61 53.35 78.76 52.9Q77.9 52.45 77.45 51.57Q76.99 50.68 76.99 49.41Q76.99 47.82 77.39 46.25Q77.8 44.68 78.55 43.3Q79.3 41.91 80.3 40.84Q81.31 39.76 82.5 39.15Q83.69 38.53 85 38.53Q86.05 38.53 86.69 38.89Q87.34 39.24 87.65 39.83Q87.95 40.42 87.95 41.11Q87.95 41.76 87.73 42.43Q87.5 43.09 87.07 43.62Q86.44 43.92 85.54 44.29Q84.64 44.65 83.58 45.03Q82.52 45.4 81.38 45.77Q80.24 46.14 79.12 46.45L79.19 45.72Q80.81 45.22 81.97 44.76Q83.12 44.29 83.89 43.83Q84.65 43.36 85.1 42.89Q85.54 42.42 85.72 41.92Q85.9 41.41 85.9 40.87Q85.9 40.41 85.73 40.06Q85.57 39.7 85.26 39.51Q84.95 39.31 84.5 39.31ZM91.07 49.09Q90.92 49.57 90.86 50.01Q90.79 50.44 90.79 50.8Q90.79 51.69 91.19 52.15Q91.6 52.62 92.38 52.62Q93.23 52.62 94.16 52Q95.09 51.37 95.95 50.32Q96.8 49.26 97.49 47.94Q98.17 46.62 98.57 45.19Q98.96 43.77 98.96 42.42Q98.96 41.44 98.57 40.9Q98.17 40.36 97.34 40.36Q96.7 40.36 96.02 40.72Q95.35 41.07 94.72 41.65Q94.09 42.24 93.56 42.92Q93.04 43.6 92.66 44.28Q92.29 44.95 92.14 45.49ZM93.52 33.75Q93.23 33.52 92.92 33.31Q92.6 33.09 92.24 32.86Q91.87 32.64 91.43 32.41L91.48 32.2L96.25 31.23H96.43L92.57 44.02L92.42 43.69Q93.58 41.91 94.66 40.77Q95.74 39.63 96.72 39.08Q97.7 38.53 98.57 38.53Q100 38.53 100.76 39.46Q101.51 40.38 101.51 41.91Q101.51 43.47 100.99 45.09Q100.46 46.71 99.54 48.19Q98.62 49.66 97.44 50.83Q96.26 51.99 94.94 52.67Q93.62 53.35 92.3 53.35Q90.64 53.35 89.75 52.44Q88.87 51.52 88.87 49.99Q88.87 49.54 88.95 49.05Q89.03 48.55 89.18 48.03ZM103.36 49.86Q103.48 50.43 103.63 50.86Q103.78 51.3 104.08 51.73Q104.39 52.18 104.72 52.33Q105.04 52.48 105.41 52.48Q106.21 52.48 106.79 52.22Q107.36 51.96 107.68 51.45Q107.99 50.94 107.99 50.2Q107.99 49.75 107.83 49.25Q107.66 48.75 107.28 48.13Q106.9 47.5 106.21 46.66Q105.53 45.82 105.14 45.16Q104.75 44.49 104.6 43.91Q104.45 43.33 104.45 42.79Q104.45 41.62 105.04 40.66Q105.62 39.69 106.7 39.11Q107.77 38.53 109.22 38.53Q110.27 38.53 110.9 38.79Q111.52 39.04 111.8 39.47Q112.09 39.9 112.09 40.45Q112.09 40.86 111.9 41.17Q111.71 41.47 111.32 41.64Q110.92 41.8 110.27 41.8Q110.24 41.2 110.11 40.82Q109.97 40.44 109.69 40.06Q109.42 39.7 109.08 39.53Q108.74 39.36 108.32 39.36Q107.32 39.36 106.72 39.89Q106.12 40.42 106.12 41.43Q106.12 41.82 106.27 42.28Q106.42 42.73 106.79 43.35Q107.17 43.96 107.83 44.83Q108.5 45.7 108.89 46.4Q109.27 47.1 109.43 47.68Q109.6 48.25 109.6 48.81Q109.6 50.13 108.93 51.15Q108.26 52.17 107.11 52.76Q105.95 53.35 104.47 53.35Q103.37 53.35 102.7 53.08Q102.02 52.81 101.72 52.36Q101.41 51.9 101.41 51.34Q101.41 50.86 101.62 50.53Q101.83 50.2 102.26 50.03Q102.7 49.86 103.36 49.86ZM112.51 52.05 116.87 40.18 117.22 40.57Q116.78 40.51 116.15 40.75Q115.52 40.98 114.71 41.59Q113.89 42.19 112.87 43.29L112.58 43.03Q113.77 41.37 114.74 40.39Q115.72 39.4 116.57 38.97Q117.41 38.53 118.15 38.53Q118.91 38.53 119.17 38.88Q119.42 39.22 119.18 39.84L114.83 51.85L114.52 51.3Q114.92 51.43 115.52 51.27Q116.12 51.1 116.99 50.51Q117.85 49.92 118.99 48.79L119.26 49.06Q118.07 50.62 117.07 51.57Q116.06 52.51 115.23 52.93Q114.4 53.35 113.68 53.35Q112.82 53.35 112.54 53.05Q112.25 52.74 112.51 52.05ZM117.98 33.21Q117.98 32.73 118.21 32.33Q118.43 31.93 118.83 31.69Q119.23 31.45 119.78 31.45Q120.61 31.45 121.09 31.97Q121.57 32.49 121.57 33.21Q121.57 33.7 121.35 34.12Q121.13 34.53 120.74 34.78Q120.34 35.04 119.78 35.04Q118.96 35.04 118.47 34.49Q117.98 33.94 117.98 33.21ZM121.9 39.81 122.15 38.83H130.12L129.91 39.81ZM123.77 49.69Q123.68 49.99 123.63 50.2Q123.58 50.41 123.56 50.56Q123.53 50.71 123.53 50.83Q123.53 51.1 123.67 51.22Q123.8 51.34 124.06 51.34Q124.4 51.34 124.96 51.04Q125.51 50.74 126.28 50.05Q127.04 49.35 127.99 48.15L128.33 48.39Q127.42 49.78 126.62 50.74Q125.81 51.69 125.12 52.27Q124.42 52.84 123.82 53.09Q123.22 53.34 122.69 53.34Q122.03 53.34 121.61 52.96Q121.19 52.57 121.19 51.66Q121.19 51.31 121.28 50.78Q121.36 50.25 121.66 49.3L125.81 35.62H128.09ZM137.11 39.31Q136.16 39.31 135.36 39.97Q134.56 40.62 133.93 41.67Q133.3 42.72 132.86 43.97Q132.43 45.22 132.2 46.45Q131.96 47.67 131.96 48.63Q131.96 50.2 132.56 50.86Q133.15 51.52 134.2 51.52Q134.96 51.52 135.7 51.2Q136.43 50.88 137.16 50.09Q137.89 49.3 138.61 47.91L139.07 47.92Q138.2 50.04 137.31 51.22Q136.42 52.41 135.46 52.88Q134.5 53.35 133.39 53.35Q132.22 53.35 131.36 52.9Q130.51 52.45 130.05 51.57Q129.59 50.68 129.59 49.41Q129.59 47.82 130 46.25Q130.4 44.68 131.15 43.3Q131.9 41.91 132.91 40.84Q133.91 39.76 135.11 39.15Q136.3 38.53 137.6 38.53Q138.65 38.53 139.3 38.89Q139.94 39.24 140.25 39.83Q140.56 40.42 140.56 41.11Q140.56 41.76 140.33 42.43Q140.11 43.09 139.67 43.62Q139.04 43.92 138.14 44.29Q137.24 44.65 136.19 45.03Q135.13 45.4 133.99 45.77Q132.85 46.14 131.72 46.45L131.8 45.72Q133.42 45.22 134.57 44.76Q135.73 44.29 136.49 43.83Q137.26 43.36 137.7 42.89Q138.14 42.42 138.32 41.92Q138.5 41.41 138.5 40.87Q138.5 40.41 138.34 40.06Q138.17 39.7 137.87 39.51Q137.56 39.31 137.11 39.31ZM142.06 49.86Q142.18 50.43 142.33 50.86Q142.48 51.3 142.78 51.73Q143.09 52.18 143.42 52.33Q143.74 52.48 144.11 52.48Q144.91 52.48 145.49 52.22Q146.06 51.96 146.38 51.45Q146.69 50.94 146.69 50.2Q146.69 49.75 146.53 49.25Q146.36 48.75 145.98 48.13Q145.6 47.5 144.91 46.66Q144.23 45.82 143.84 45.16Q143.45 44.49 143.3 43.91Q143.15 43.33 143.15 42.79Q143.15 41.62 143.74 40.66Q144.32 39.69 145.4 39.11Q146.47 38.53 147.92 38.53Q148.97 38.53 149.6 38.79Q150.22 39.04 150.5 39.47Q150.79 39.9 150.79 40.45Q150.79 40.86 150.6 41.17Q150.41 41.47 150.02 41.64Q149.62 41.8 148.97 41.8Q148.94 41.2 148.81 40.82Q148.67 40.44 148.39 40.06Q148.12 39.7 147.78 39.53Q147.44 39.36 147.02 39.36Q146.02 39.36 145.42 39.89Q144.82 40.42 144.82 41.43Q144.82 41.82 144.97 42.28Q145.12 42.73 145.49 43.35Q145.87 43.96 146.53 44.83Q147.2 45.7 147.59 46.4Q147.97 47.1 148.13 47.68Q148.3 48.25 148.3 48.81Q148.3 50.13 147.63 51.15Q146.96 52.17 145.81 52.76Q144.65 53.35 143.17 53.35Q142.07 53.35 141.4 53.08Q140.72 52.81 140.42 52.36Q140.11 51.9 140.11 51.34Q140.11 50.86 140.32 50.53Q140.53 50.2 140.96 50.03Q141.4 49.86 142.06 49.86Z"/></g></svg>
+</a>
+      <p class="rp-legal"><a href="https://wirthwebsites.de/impressum.html">Impressum</a> · <a href="https://wirthwebsites.de/datenschutz.html">Datenschutz</a> · <a href="https://wirthwebsites.de/agb.html">AGB</a><br>Fiktives Beispiel: Restaurant, Texte und Angaben sind ausgedacht, Fotos sind Symbolbilder. Fotos: Unsplash-Fotografen über Wikimedia Commons (CC0).</p>
+    </aside>
   </div>
-  <p class="e-wrap e-credit">Website von Wirth Websites · Fiktives Beispiel: Restaurant, Texte und Angaben sind ausgedacht, Fotos sind Symbolbilder. Fotos: Unsplash-Fotografen über Wikimedia Commons (CC0).</p>
 </footer>
 
-<section class="rw-wirth" id="wirth" aria-labelledby="rw-wirth-h">
-  <div class="rw-wirth-in">
-    <a class="rw-wirth-logo" href="https://wirthwebsites.de/" aria-label="Wirth Websites"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -4 153 58" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M41.89 4.88 23.96 53.73H20.91L5.06 0.39L-1.04 -1.5V-2.77H21.92V-1.5L14.88 0.31L27.19 43.27L24.96 43.89L41.81 -3.45H45.2L63.19 43.65L61.07 43.99L72.22 0.44L64.99 -1.5V-2.77H81.31V-1.5L75.32 0.52L60.75 53.73H57.69L39.07 6.44Z"/><path d="M85.88 4.15Q84.95 4.15 84.4 3.52Q83.85 2.89 83.85 2.1Q83.85 1.3 84.4 0.73Q84.95 0.16 85.88 0.16Q86.81 0.16 87.33 0.73Q87.86 1.3 87.86 2.1Q87.86 2.89 87.33 3.52Q86.81 4.15 85.88 4.15ZM87.51 6.84 87.48 9.67V21.1L89.63 21.62V22.05H82.57V21.62L84.71 21.1V9.84Q84.54 9.72 84.21 9.5Q83.88 9.28 83.45 9.02Q83.03 8.76 82.57 8.49V8.19L87.37 6.84ZM100.24 7Q100.94 7 101.33 7.39Q101.72 7.77 101.72 8.43Q101.72 9.21 101.22 9.7Q100.73 10.19 99.96 10.19Q99.62 10.19 99.27 10.09Q98.93 9.99 98.55 9.9Q98.17 9.81 97.72 9.81Q97.3 9.81 96.9 9.95Q96.51 10.1 96.13 10.34Q95.75 10.59 95.38 10.93L95.3 10.3Q96.37 9.22 97.15 8.56Q97.93 7.91 98.47 7.57Q99.01 7.23 99.43 7.12Q99.85 7 100.24 7ZM95.59 9.73V21.1L98 21.62V22.05H90.68V21.62L92.83 21.1V9.88Q92.63 9.73 92.34 9.56Q92.05 9.38 91.64 9.13Q91.24 8.88 90.68 8.57V8.26L95.43 6.84H95.56ZM107.08 18.16Q107.08 19.23 107.75 19.78Q108.42 20.34 109.57 20.34Q110.2 20.34 110.9 20.22Q111.6 20.1 112.5 19.83V20.32Q111.22 21.12 110.38 21.56Q109.55 22.01 108.94 22.18Q108.34 22.36 107.69 22.36Q106.78 22.36 106.01 21.97Q105.24 21.58 104.77 20.74Q104.3 19.9 104.3 18.57V9.27L102.44 8.06V7.84Q102.62 7.7 102.95 7.49Q103.27 7.29 103.69 7.01Q104.11 6.73 104.61 6.39Q105.11 6.06 105.68 5.68Q106.25 5.3 106.86 4.91H107.08V7.78ZM106.1 8.88V7.26H112.08L111.83 8.88ZM122.33 21.62 124.48 21.1V12.05Q124.48 11.09 124.14 10.45Q123.8 9.81 123.11 9.48Q122.41 9.15 121.32 9.15Q120.16 9.15 119.12 9.49Q118.08 9.83 117.45 10.24L117.17 9.88Q118.25 9 119.09 8.43Q119.92 7.85 120.59 7.54Q121.27 7.22 121.9 7.09Q122.53 6.96 123.24 6.96Q125.35 6.96 126.31 8.14Q127.27 9.31 127.27 11.83V21.1L129.41 21.62V22.05H122.33ZM119.92 22.05H112.85V21.62L115 21.1V2.75Q114.8 2.61 114.45 2.43Q114.11 2.25 113.64 2.02Q113.17 1.78 112.58 1.5V1.22L117.68 0H117.81L117.78 7.64V21.1L119.92 21.62ZM84.5 39.31Q83.56 39.31 82.76 39.97Q81.95 40.62 81.32 41.67Q80.69 42.72 80.26 43.97Q79.82 45.22 79.59 46.45Q79.36 47.67 79.36 48.63Q79.36 50.2 79.95 50.86Q80.54 51.52 81.59 51.52Q82.36 51.52 83.09 51.2Q83.83 50.88 84.56 50.09Q85.28 49.3 86 47.91L86.47 47.92Q85.6 50.04 84.71 51.22Q83.81 52.41 82.85 52.88Q81.89 53.35 80.78 53.35Q79.61 53.35 78.76 52.9Q77.9 52.45 77.45 51.57Q76.99 50.68 76.99 49.41Q76.99 47.82 77.39 46.25Q77.8 44.68 78.55 43.3Q79.3 41.91 80.3 40.84Q81.31 39.76 82.5 39.15Q83.69 38.53 85 38.53Q86.05 38.53 86.69 38.89Q87.34 39.24 87.65 39.83Q87.95 40.42 87.95 41.11Q87.95 41.76 87.73 42.43Q87.5 43.09 87.07 43.62Q86.44 43.92 85.54 44.29Q84.64 44.65 83.58 45.03Q82.52 45.4 81.38 45.77Q80.24 46.14 79.12 46.45L79.19 45.72Q80.81 45.22 81.97 44.76Q83.12 44.29 83.89 43.83Q84.65 43.36 85.1 42.89Q85.54 42.42 85.72 41.92Q85.9 41.41 85.9 40.87Q85.9 40.41 85.73 40.06Q85.57 39.7 85.26 39.51Q84.95 39.31 84.5 39.31ZM91.07 49.09Q90.92 49.57 90.86 50.01Q90.79 50.44 90.79 50.8Q90.79 51.69 91.19 52.15Q91.6 52.62 92.38 52.62Q93.23 52.62 94.16 52Q95.09 51.37 95.95 50.32Q96.8 49.26 97.49 47.94Q98.17 46.62 98.57 45.19Q98.96 43.77 98.96 42.42Q98.96 41.44 98.57 40.9Q98.17 40.36 97.34 40.36Q96.7 40.36 96.02 40.72Q95.35 41.07 94.72 41.65Q94.09 42.24 93.56 42.92Q93.04 43.6 92.66 44.28Q92.29 44.95 92.14 45.49ZM93.52 33.75Q93.23 33.52 92.92 33.31Q92.6 33.09 92.24 32.86Q91.87 32.64 91.43 32.41L91.48 32.2L96.25 31.23H96.43L92.57 44.02L92.42 43.69Q93.58 41.91 94.66 40.77Q95.74 39.63 96.72 39.08Q97.7 38.53 98.57 38.53Q100 38.53 100.76 39.46Q101.51 40.38 101.51 41.91Q101.51 43.47 100.99 45.09Q100.46 46.71 99.54 48.19Q98.62 49.66 97.44 50.83Q96.26 51.99 94.94 52.67Q93.62 53.35 92.3 53.35Q90.64 53.35 89.75 52.44Q88.87 51.52 88.87 49.99Q88.87 49.54 88.95 49.05Q89.03 48.55 89.18 48.03ZM103.36 49.86Q103.48 50.43 103.63 50.86Q103.78 51.3 104.08 51.73Q104.39 52.18 104.72 52.33Q105.04 52.48 105.41 52.48Q106.21 52.48 106.79 52.22Q107.36 51.96 107.68 51.45Q107.99 50.94 107.99 50.2Q107.99 49.75 107.83 49.25Q107.66 48.75 107.28 48.13Q106.9 47.5 106.21 46.66Q105.53 45.82 105.14 45.16Q104.75 44.49 104.6 43.91Q104.45 43.33 104.45 42.79Q104.45 41.62 105.04 40.66Q105.62 39.69 106.7 39.11Q107.77 38.53 109.22 38.53Q110.27 38.53 110.9 38.79Q111.52 39.04 111.8 39.47Q112.09 39.9 112.09 40.45Q112.09 40.86 111.9 41.17Q111.71 41.47 111.32 41.64Q110.92 41.8 110.27 41.8Q110.24 41.2 110.11 40.82Q109.97 40.44 109.69 40.06Q109.42 39.7 109.08 39.53Q108.74 39.36 108.32 39.36Q107.32 39.36 106.72 39.89Q106.12 40.42 106.12 41.43Q106.12 41.82 106.27 42.28Q106.42 42.73 106.79 43.35Q107.17 43.96 107.83 44.83Q108.5 45.7 108.89 46.4Q109.27 47.1 109.43 47.68Q109.6 48.25 109.6 48.81Q109.6 50.13 108.93 51.15Q108.26 52.17 107.11 52.76Q105.95 53.35 104.47 53.35Q103.37 53.35 102.7 53.08Q102.02 52.81 101.72 52.36Q101.41 51.9 101.41 51.34Q101.41 50.86 101.62 50.53Q101.83 50.2 102.26 50.03Q102.7 49.86 103.36 49.86ZM112.51 52.05 116.87 40.18 117.22 40.57Q116.78 40.51 116.15 40.75Q115.52 40.98 114.71 41.59Q113.89 42.19 112.87 43.29L112.58 43.03Q113.77 41.37 114.74 40.39Q115.72 39.4 116.57 38.97Q117.41 38.53 118.15 38.53Q118.91 38.53 119.17 38.88Q119.42 39.22 119.18 39.84L114.83 51.85L114.52 51.3Q114.92 51.43 115.52 51.27Q116.12 51.1 116.99 50.51Q117.85 49.92 118.99 48.79L119.26 49.06Q118.07 50.62 117.07 51.57Q116.06 52.51 115.23 52.93Q114.4 53.35 113.68 53.35Q112.82 53.35 112.54 53.05Q112.25 52.74 112.51 52.05ZM117.98 33.21Q117.98 32.73 118.21 32.33Q118.43 31.93 118.83 31.69Q119.23 31.45 119.78 31.45Q120.61 31.45 121.09 31.97Q121.57 32.49 121.57 33.21Q121.57 33.7 121.35 34.12Q121.13 34.53 120.74 34.78Q120.34 35.04 119.78 35.04Q118.96 35.04 118.47 34.49Q117.98 33.94 117.98 33.21ZM121.9 39.81 122.15 38.83H130.12L129.91 39.81ZM123.77 49.69Q123.68 49.99 123.63 50.2Q123.58 50.41 123.56 50.56Q123.53 50.71 123.53 50.83Q123.53 51.1 123.67 51.22Q123.8 51.34 124.06 51.34Q124.4 51.34 124.96 51.04Q125.51 50.74 126.28 50.05Q127.04 49.35 127.99 48.15L128.33 48.39Q127.42 49.78 126.62 50.74Q125.81 51.69 125.12 52.27Q124.42 52.84 123.82 53.09Q123.22 53.34 122.69 53.34Q122.03 53.34 121.61 52.96Q121.19 52.57 121.19 51.66Q121.19 51.31 121.28 50.78Q121.36 50.25 121.66 49.3L125.81 35.62H128.09ZM137.11 39.31Q136.16 39.31 135.36 39.97Q134.56 40.62 133.93 41.67Q133.3 42.72 132.86 43.97Q132.43 45.22 132.2 46.45Q131.96 47.67 131.96 48.63Q131.96 50.2 132.56 50.86Q133.15 51.52 134.2 51.52Q134.96 51.52 135.7 51.2Q136.43 50.88 137.16 50.09Q137.89 49.3 138.61 47.91L139.07 47.92Q138.2 50.04 137.31 51.22Q136.42 52.41 135.46 52.88Q134.5 53.35 133.39 53.35Q132.22 53.35 131.36 52.9Q130.51 52.45 130.05 51.57Q129.59 50.68 129.59 49.41Q129.59 47.82 130 46.25Q130.4 44.68 131.15 43.3Q131.9 41.91 132.91 40.84Q133.91 39.76 135.11 39.15Q136.3 38.53 137.6 38.53Q138.65 38.53 139.3 38.89Q139.94 39.24 140.25 39.83Q140.56 40.42 140.56 41.11Q140.56 41.76 140.33 42.43Q140.11 43.09 139.67 43.62Q139.04 43.92 138.14 44.29Q137.24 44.65 136.19 45.03Q135.13 45.4 133.99 45.77Q132.85 46.14 131.72 46.45L131.8 45.72Q133.42 45.22 134.57 44.76Q135.73 44.29 136.49 43.83Q137.26 43.36 137.7 42.89Q138.14 42.42 138.32 41.92Q138.5 41.41 138.5 40.87Q138.5 40.41 138.34 40.06Q138.17 39.7 137.87 39.51Q137.56 39.31 137.11 39.31ZM142.06 49.86Q142.18 50.43 142.33 50.86Q142.48 51.3 142.78 51.73Q143.09 52.18 143.42 52.33Q143.74 52.48 144.11 52.48Q144.91 52.48 145.49 52.22Q146.06 51.96 146.38 51.45Q146.69 50.94 146.69 50.2Q146.69 49.75 146.53 49.25Q146.36 48.75 145.98 48.13Q145.6 47.5 144.91 46.66Q144.23 45.82 143.84 45.16Q143.45 44.49 143.3 43.91Q143.15 43.33 143.15 42.79Q143.15 41.62 143.74 40.66Q144.32 39.69 145.4 39.11Q146.47 38.53 147.92 38.53Q148.97 38.53 149.6 38.79Q150.22 39.04 150.5 39.47Q150.79 39.9 150.79 40.45Q150.79 40.86 150.6 41.17Q150.41 41.47 150.02 41.64Q149.62 41.8 148.97 41.8Q148.94 41.2 148.81 40.82Q148.67 40.44 148.39 40.06Q148.12 39.7 147.78 39.53Q147.44 39.36 147.02 39.36Q146.02 39.36 145.42 39.89Q144.82 40.42 144.82 41.43Q144.82 41.82 144.97 42.28Q145.12 42.73 145.49 43.35Q145.87 43.96 146.53 44.83Q147.2 45.7 147.59 46.4Q147.97 47.1 148.13 47.68Q148.3 48.25 148.3 48.81Q148.3 50.13 147.63 51.15Q146.96 52.17 145.81 52.76Q144.65 53.35 143.17 53.35Q142.07 53.35 141.4 53.08Q140.72 52.81 140.42 52.36Q140.11 51.9 140.11 51.34Q140.11 50.86 140.32 50.53Q140.53 50.2 140.96 50.03Q141.4 49.86 142.06 49.86Z"/></g></svg>
-</a>
-    <p class="eyebrow">Über uns</p>
-    <h2 id="rw-wirth-h">Wirth, wie der Wirt.</h2>
-    <p class="rw-wirth-lead">Ein guter Wirt sorgt dafür, dass Gäste sich wohlfühlen und wiederkommen. Das soll Ihre Website für Ihre Gäste tun – und dafür sorgt ein kleines Team mit einem festen Ansprechpartner.</p>
-    <ul class="rw-team" aria-label="Ihr Team bei Wirth Websites">
-      <li><img class="av" src="../assets/img/alexander-wirth-160.jpg" srcset="../assets/img/alexander-wirth-160.jpg 160w, ../assets/img/alexander-wirth-400.jpg 400w" sizes="64px" width="128" height="128" alt="Alexander Wirth" loading="lazy" decoding="async"></li>
-      <li><span class="ini" role="img" aria-label="Constantin Frischkorn">CF</span></li>
-    </ul>
-    <p class="rw-team-name">Alexander Wirth und Constantin Frischkorn<br>Wirth Websites, Heidelberg</p>
-    <blockquote>Ich heiße Alexander Wirth und helfe Betrieben aus der Region, im Internet so gut auszusehen, wie sie arbeiten. Keine Agentur-Floskeln, keine langen Verträge – Sie haben einen festen Ansprechpartner, der sich kümmert.</blockquote>
-    <nav class="rw-links" aria-label="Anbieter"><a href="https://wirthwebsites.de/">wirthwebsites.de</a><a href="https://wirthwebsites.de/impressum.html">Impressum</a><a href="https://wirthwebsites.de/datenschutz.html">Datenschutz</a></nav>
-  </div>
-</section>
-
-<div class="rw-dock">
-  <a class="btn btn-creme rw-wa" href="https://wa.me/4915100000000?text=Hallo%2C%20ich%20habe%20meine%20neue%20Website%20gesehen%3A%20https%3A%2F%2Fsaschaalexanderwirth.github.io%2Fwirthwebsites-preview%2Fscan%2Ftrattoria-beispiel%2F" data-wa="4915100000000" data-wa-text="Hallo, ich habe meine neue Website gesehen: " target="_blank" rel="noopener"><svg class="rw-wa-ico" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.28-.2-.57-.35zm-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg><span>Mit Wirth Websites schreiben</span></a>
-  <p class="rw-dock-note">2 Tage kostenlos online ansehen – Änderungen einfach per WhatsApp</p>
+<div class="rp-dock">
+  <a class="rw-wa" href="https://wa.me/4915100000000?text=Hallo%2C%20ich%20habe%20meine%20neue%20Website%20gesehen%3A%20https%3A%2F%2Fsaschaalexanderwirth.github.io%2Fwirthwebsites-preview%2Fscan%2Ftrattoria-beispiel%2F" data-wa="4915100000000" data-wa-text="Hallo, ich habe meine neue Website gesehen: " target="_blank" rel="noopener"><svg class="rw-wa-ico" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.28-.2-.57-.35zm-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg><span>Per WhatsApp schreiben</span></a>
 </div>
-
-<div class="e-toast" role="status" aria-live="polite"></div>
 </body>
 </html>
