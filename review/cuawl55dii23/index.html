@@ -206,6 +206,25 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
         });
       }
     } catch (e) { /* ignore broken storage */ }
+    // Migration: Bewertungen aus der ersten Version (alter Schlüssel, alte Ränge) per Domain übernehmen
+    try {
+      var OLD = 'leadreview_v1_' + location.pathname.replace(/index\.html$/, '');
+      var o = JSON.parse(localStorage.getItem(OLD) || 'null');
+      if (o && typeof o === 'object' && o.dec) {
+        var byDom = {};
+        Object.keys(o.dec).forEach(function (k) { var d = o.dec[k]; if (d && d.domain) byDom[d.domain] = d; });
+        var n = 0;
+        leads.forEach(function (lead) {
+          var d = byDom[lead.domain];
+          if (!st.dec[lead.rank] && d && Object.prototype.hasOwnProperty.call(LABEL, d.decision) && Array.isArray(d.chips) && typeof d.reason === 'string') {
+            var c = {}; for (var x in d) c[x] = d[x];
+            c.rank = lead.rank; c.alt_rank = lead.alt_rank; c.migrated = true;
+            st.dec[lead.rank] = c; n++;
+          }
+        });
+        if (n) { save(); setTimeout(function () { toast(n + ' Bewertungen aus der ersten Version übernommen'); }, 400); }
+      }
+    } catch (e) { /* ignore */ }
   }
   function decidedCount() { return Object.keys(st.dec).length; }
   function nextOpen(from) {
