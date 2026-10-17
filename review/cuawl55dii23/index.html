@@ -42,11 +42,20 @@ header{flex:none;padding-bottom:8px}
 h2{margin:2px 0 0;font-size:22px;line-height:1.2;word-break:break-word}
 .sub{color:var(--mut);font-size:14px}
 .inh{color:var(--mut);font-size:12px}
-.kpi{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 8px;font-size:13px;color:var(--mut)}
-.kpi b{color:var(--fg);font-size:16px;font-variant-numeric:tabular-nums}
+.kpi{display:flex;flex-wrap:wrap;gap:4px 10px;margin:10px 0 8px;font-size:12px;color:var(--mut)}
+.kpi b{color:var(--fg);font-size:15px;font-variant-numeric:tabular-nums}
 .warn{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .pill{font-size:12px;font-weight:600;border:1.5px solid var(--fg);border-radius:999px;padding:2px 9px}
 .pill.dark{background:var(--fg);color:#fff}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.badge{font-size:12px;font-weight:600;border-radius:6px;padding:3px 8px;border:1.5px solid var(--fg)}
+.badge.sell{border-color:var(--ok);color:var(--ok)}
+.badge.over{border-style:dashed;color:var(--mut);border-color:var(--mut)}
+.grp{font-size:12px;font-weight:700;letter-spacing:.03em;border-radius:999px;padding:1px 8px;border:1.5px solid var(--fg)}
+.grp.g-top{background:var(--fg);color:#fff}
+.grp.g-raus{color:var(--no);border-color:var(--no)}
+.jgrund{margin:0 0 8px;font-size:14px}
+.jgrund b{font-weight:600}
 .shot{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#f4f4f4;object-fit:cover;object-position:top}
 .desk{aspect-ratio:640/400;height:auto}
 .row{display:flex;gap:12px;margin-top:10px;align-items:flex-start}
@@ -156,13 +165,14 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
 <script>
 (function () {
   'use strict';
-  var KEY = 'leadreview_v1_' + location.pathname.replace(/index\.html$/, '');
-  var LIST = '2026-10-17-restaurants-top200';
+  var LIST = '2026-10-17-restaurants-judged'; /*LIST_ID*/
+  var KEY = 'leadreview_v1_' + LIST + '_' + location.pathname.replace(/index\.html$/, '');
   var CHIPS = ['Seite ist gut', 'Kette', 'Hotel', 'kein Restaurant', 'zu, existiert nicht', 'Agentur', 'Plattform/Baukasten', 'Sonstiges'];
   var LABEL = { passt: 'Passt', passt_nicht: 'Passt nicht', unsicher: 'Unsicher' };
   var MAX_URL = 1900;
 
   var leads = [];
+  var byRank = {};
   var st = { idx: 0, dec: {}, hist: [] }; // dec: rank -> decision; hist: [{rank, prev, idx}]
   var $ = function (id) { return document.getElementById(id); };
   var stage = $('stage');
@@ -237,7 +247,13 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
     card.appendChild(s);
 
     var r = el('div', 'rank');
-    r.appendChild(el('span', '', '#' + lead.rank));
+    var J = lead.judge && typeof lead.judge === 'object' ? lead.judge : null;
+    var left = el('span', '', '#' + lead.rank + (lead.alt_rank ? ' · alt #' + lead.alt_rank : '') + ' ');
+    if (J && J.group) {
+      var gcls = { 'TOP 100': 'g-top', 'nachgerückt': 'g-top', 'unsicher': 'g-uns', 'raus': 'g-raus' }[J.group] || '';
+      left.appendChild(el('span', 'grp ' + gcls, J.group));
+    }
+    r.appendChild(left);
     var d = st.dec[lead.rank];
     if (d) r.appendChild(el('span', 'prev', 'Bisher: ' + LABEL[d.decision]));
     s.appendChild(r);
@@ -249,12 +265,24 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
     function kpi(label, val) { var x = el('span', '', label + ' '); x.appendChild(el('b', '', val)); k.appendChild(x); }
     kpi('Score', lead.score != null ? lead.score : '–');
     kpi('Hässlichkeit', lead.gemini != null ? lead.gemini + '/10' : '–');
-    if (lead.judge && typeof lead.judge === 'object') {
-      Object.keys(lead.judge).forEach(function (key) {
-        if (key !== 'note' && lead.judge[key] != null) kpi(key.charAt(0).toUpperCase() + key.slice(1), lead.judge[key]);
-      });
+    if (J) {
+      if (J.claude != null) kpi('Claude', J.claude);
+      if (J.codex != null) kpi('Codex', J.codex);
+      if (J.avg != null) kpi('Ø', String(J.avg).replace('.', ','));
     }
     s.appendChild(k);
+    if (J && (J.https_broken || J.gemini_over)) {
+      var bd = el('div', 'badges');
+      if (J.https_broken) bd.appendChild(el('span', 'badge sell', '🔓 https kaputt / Sicherheitswarnung'));
+      if (J.gemini_over) bd.appendChild(el('span', 'badge over', 'Gemini überschätzt'));
+      s.appendChild(bd);
+    }
+    if (J && J.grund) {
+      var jg = el('p', 'jgrund');
+      jg.appendChild(el('b', '', 'Judges: '));
+      jg.appendChild(document.createTextNode(J.grund));
+      s.appendChild(jg);
+    }
 
     if (lead.warn && lead.warn.length) {
       var w = el('div', 'warn');
@@ -267,9 +295,9 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
     var row = el('div', 'row');
     row.appendChild(img(lead.mobile, 'mob', 300, 650, 'Mobil-Screenshot ' + lead.domain));
     var info = el('div', 'info');
-    info.appendChild(el('p', 'grund', lead.grund || ''));
+    if (!J) info.appendChild(el('p', 'grund', lead.grund || ''));
     var extra = (lead.reasons || []).slice();
-    if (lead.judge && lead.judge.note) extra.push('Judge: ' + lead.judge.note);
+    if (J && lead.grund) extra.unshift('Algorithmus: ' + lead.grund);
     if (extra.length || lead.grund) {
       var ul = el('ul', 'ext');
       extra.forEach(function (t) { ul.appendChild(el('li', '', t)); });
@@ -550,7 +578,9 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
   function results() {
     return Object.keys(st.dec).map(function (r) {
       var d = st.dec[r];
-      return { rank: d.rank, domain: d.domain, name: d.name, decision: d.decision, chips: d.chips, reason: d.reason, ts: d.ts };
+      var L = byRank[d.rank] || {};
+      return { rank: d.rank, alt_rank: L.alt_rank || null, group: (L.judge && L.judge.group) || null, domain: d.domain, name: d.name,
+        decision: d.decision, chips: d.chips, reason: d.reason, ts: d.ts };
     }).sort(function (a, b) { return a.rank - b.rank; });
   }
   function jsonText() {
@@ -680,6 +710,7 @@ textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid
   }).then(function (data) {
     if (!Array.isArray(data) || !data.length) throw new Error('leere Liste');
     leads = data.slice().sort(function (a, b) { return a.rank - b.rank; });
+    leads.forEach(function (l) { byRank[l.rank] = l; });
     load();
     st.idx = nextOpen(0);
     render();
