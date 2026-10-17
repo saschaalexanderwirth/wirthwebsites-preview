@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:,">
+<title>Restaurant-Leads prüfen</title>
+<style>
+:root{--fg:#111;--mut:#6b6b6b;--line:#e2e2e2;--bg:#fff;--ok:#1d6b3a;--no:#b3261e;--sat:env(safe-area-inset-top);--sab:env(safe-area-inset-bottom)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg)}
+body{font:15px/1.4 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;overscroll-behavior:none}
+button{font:inherit;color:inherit;background:none;border:1px solid var(--fg);border-radius:10px;padding:10px 12px;cursor:pointer}
+button:disabled{opacity:.35;cursor:default}
+button.solid{background:var(--fg);color:#fff}
+button.plain{border-color:var(--line)}
+a{color:inherit}
+#app{max-width:480px;margin:0 auto;height:100%;height:100dvh;display:flex;flex-direction:column;
+  padding:calc(var(--sat) + 8px) calc(env(safe-area-inset-right) + 12px) calc(var(--sab) + 8px) calc(env(safe-area-inset-left) + 12px)}
+header{flex:none;padding-bottom:8px}
+.top{display:flex;align-items:center;gap:8px}
+.prog{font-weight:600;font-variant-numeric:tabular-nums}
+.counts{color:var(--mut);font-size:13px;font-variant-numeric:tabular-nums;flex:1}
+.top button{padding:6px 10px;font-size:14px;border-color:var(--line)}
+.bar{height:3px;background:var(--line);margin-top:8px;border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--fg);transition:width .2s}
+#stage{flex:1;position:relative;min-height:0}
+.card{position:absolute;inset:0;border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;will-change:transform}
+.card.back1{transform:translateY(6px) scale(.98)}
+.card.back2{transform:translateY(12px) scale(.96)}
+.card.back1 .scroll,.card.back2 .scroll{opacity:.35}
+.card.anim{transition:transform .25s ease,opacity .25s}
+.scroll{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;touch-action:pan-y}
+.lbl{position:absolute;top:18px;padding:4px 10px;border:2px solid;border-radius:8px;font-weight:700;letter-spacing:.04em;opacity:0;pointer-events:none;background:#fff;z-index:2}
+.lbl.ok{left:16px;color:var(--ok);transform:rotate(-8deg)}
+.lbl.no{right:16px;color:var(--no);transform:rotate(8deg)}
+.rank{color:var(--mut);font-size:13px;display:flex;justify-content:space-between;gap:8px}
+.prev{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:0 6px}
+h2{margin:2px 0 0;font-size:22px;line-height:1.2;word-break:break-word}
+.sub{color:var(--mut);font-size:14px}
+.inh{color:var(--mut);font-size:12px}
+.kpi{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 8px;font-size:13px;color:var(--mut)}
+.kpi b{color:var(--fg);font-size:16px;font-variant-numeric:tabular-nums}
+.warn{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.pill{font-size:12px;font-weight:600;border:1.5px solid var(--fg);border-radius:999px;padding:2px 9px}
+.pill.dark{background:var(--fg);color:#fff}
+.shot{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#f4f4f4;object-fit:cover;object-position:top}
+.desk{aspect-ratio:640/400;height:auto}
+.row{display:flex;gap:12px;margin-top:10px;align-items:flex-start}
+.mob{width:96px;flex:none;aspect-ratio:300/520;height:auto}
+.ph{display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:12px;text-align:center}
+.info{flex:1;min-width:0}
+.grund{margin:0;font-size:14px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.open .grund{display:block}
+.more{border:0;padding:4px 0;font-size:13px;color:var(--mut);text-decoration:underline}
+.ext{display:none;font-size:13px;color:var(--mut);margin:4px 0 0;padding-left:18px}
+.open .ext{display:block}
+.link{display:inline-block;margin-top:8px;font-weight:600;font-size:14px}
+.dom{color:var(--mut);font-size:12px;word-break:break-all}
+.msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:24px}
+.msg h2{font-size:20px}
+.actions{flex:none;display:grid;grid-template-columns:1fr auto 1fr;gap:8px;padding-top:10px}
+.actions button{padding:13px 8px;font-weight:600;font-size:16px}
+#bNo{border-color:var(--no);color:var(--no)}
+#bOk{border-color:var(--ok);color:var(--ok)}
+#bUns{border-color:var(--line);font-size:14px}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:#fff;border-radius:16px 16px 0 0;z-index:11;display:none;
+  padding:16px 16px calc(var(--sab) + 16px);max-height:88dvh;overflow-y:auto}
+.show{display:block}
+.sheet h3{margin:0 0 12px;font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:15px}
+.chip.on{background:var(--fg);color:#fff;border-color:var(--fg)}
+textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:70px;resize:vertical}
+.btns{display:flex;gap:8px;margin-top:12px}
+.btns button{flex:1}
+.stack{display:flex;flex-direction:column;gap:8px}
+.stack button{text-align:left}
+.hint{font-size:13px;color:var(--mut);margin:8px 0 0}
+.list{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--line)}
+.list li{display:flex;gap:8px;align-items:baseline;padding:10px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.list .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list .d{font-size:13px;font-weight:600;white-space:nowrap}
+.d.passt{color:var(--ok)}.d.passt_nicht{color:var(--no)}.d.unsicher{color:var(--mut)}
+#zoom{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:20;display:none;overflow:auto;padding:calc(var(--sat) + 12px) 12px calc(var(--sab) + 12px)}
+#zoom img{display:block;max-width:100%;margin:0 auto;height:auto}
+#zoom.show{display:block}
+#toast{position:fixed;left:50%;bottom:calc(var(--sab) + 90px);transform:translateX(-50%);background:var(--fg);color:#fff;border-radius:999px;padding:8px 16px;font-size:14px;z-index:30;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="top">
+      <span class="prog" id="prog">0 / 0</span>
+      <span class="counts" id="counts"></span>
+      <button id="bUndo" title="Rückgängig (Z)" aria-label="Rückgängig">↶</button>
+      <button id="bSend">Senden</button>
+      <button id="bMenu" aria-label="Menü">☰</button>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+  </header>
+  <main id="stage"><div class="msg"><p>Lade Leads…</p></div></main>
+  <div class="actions">
+    <button id="bNo">✗ Passt nicht</button>
+    <button id="bUns">? Unsicher</button>
+    <button id="bOk">✓ Passt</button>
+  </div>
+</div>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="sheet" id="whySheet" role="dialog" aria-label="Warum passt es nicht?">
+  <h3>Warum?</h3>
+  <div class="chips" id="chips"></div>
+  <textarea aria-label="Begründung" id="reason" placeholder="Begründung (optional, wenn Chip gewählt)"></textarea>
+  <div class="btns">
+    <button class="plain" id="whyCancel">Abbrechen</button>
+    <button class="solid" id="whySave" disabled>Speichern</button>
+  </div>
+</div>
+
+<div class="sheet" id="menuSheet" role="dialog" aria-label="Übersicht">
+  <h3>Übersicht</h3>
+  <div class="stack">
+    <button id="mSend">Ergebnis senden</button>
+    <button id="mFirst">Zum ersten offenen Lead</button>
+    <button id="mReset" class="plain">Alles zurücksetzen</button>
+  </div>
+  <ul class="list" id="mList"></ul>
+  <div class="btns"><button class="plain" id="mClose">Schließen</button></div>
+</div>
+
+<div class="sheet" id="sendSheet" role="dialog" aria-label="Ergebnis senden">
+  <h3>Ergebnis senden</h3>
+  <p class="hint" id="sendInfo" style="margin:0 0 12px"></p>
+  <div class="stack">
+    <button id="sShare" class="solid">Teilen…</button>
+    <button id="sCopy">JSON kopieren</button>
+    <button id="sDown">JSON herunterladen</button>
+    <button id="sMail">Per E-Mail</button>
+    <button id="sWa">Per WhatsApp</button>
+  </div>
+  <p class="hint">E-Mail und WhatsApp enthalten eine kompakte Textfassung. Bei vielen Einträgen besser „Teilen…“ oder „JSON kopieren“ nutzen.</p>
+  <div class="btns"><button class="plain" id="sClose">Schließen</button></div>
+</div>
+
+<div id="zoom"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'leadreview_v1_' + location.pathname.replace(/index\.html$/, '');
+  var LIST = '2026-10-17-restaurants-top200';
+  var CHIPS = ['Seite ist gut', 'Kette', 'Hotel', 'kein Restaurant', 'zu, existiert nicht', 'Agentur', 'Plattform/Baukasten', 'Sonstiges'];
+  var LABEL = { passt: 'Passt', passt_nicht: 'Passt nicht', unsicher: 'Unsicher' };
+  var MAX_URL = 1900;
+
+  var leads = [];
+  var st = { idx: 0, dec: {}, hist: [] }; // dec: rank -> decision; hist: [{rank, prev, idx}]
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $('stage');
+  var busy = false;
+
+  // ---------- helpers ----------
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = String(text);
+    return e;
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { toast('Speichern fehlgeschlagen'); }
+  }
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (s && typeof s === 'object' && s.dec) {
+        function valid(d, rank) {
+          return d && d.rank === rank && Object.prototype.hasOwnProperty.call(LABEL, d.decision) &&
+            Array.isArray(d.chips) && d.chips.every(function (c) { return typeof c === 'string'; }) &&
+            typeof d.reason === 'string' && (d.decision !== 'passt_nicht' || d.chips.length || d.reason.trim());
+        }
+        leads.forEach(function (lead) {
+          var d = s.dec[lead.rank];
+          if (valid(d, lead.rank)) st.dec[lead.rank] = d;
+        });
+        st.hist = (Array.isArray(s.hist) ? s.hist : []).filter(function (h) {
+          return h && leads[h.idx] && leads[h.idx].rank === h.rank && (!h.prev || valid(h.prev, h.rank));
+        });
+      }
+    } catch (e) { /* ignore broken storage */ }
+  }
+  function decidedCount() { return Object.keys(st.dec).length; }
+  function nextOpen(from) {
+    for (var i = 0; i < leads.length; i++) {
+      var j = (from + i) % leads.length;
+      if (!st.dec[leads[j].rank]) return j;
+    }
+    return -1;
+  }
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  var toastT;
+  function toast(t) {
+    var e = $('toast'); e.textContent = t; e.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function () { e.classList.remove('show'); }, 1600);
+  }
+
+  // ---------- rendering ----------
+  function img(src, cls, w, h, alt) {
+    var i = el('img', 'shot ' + cls);
+    i.src = src; i.width = w; i.height = h; i.alt = alt; i.loading = 'lazy'; i.decoding = 'async'; i.draggable = false;
+    i.addEventListener('error', function () {
+      var p = el('div', 'shot ph ' + cls, 'kein Screenshot');
+      if (i.parentNode) i.parentNode.replaceChild(p, i);
+    });
+    i.tabIndex = 0; i.setAttribute('role', 'button');
+    i.addEventListener('click', function () { if (i.naturalWidth) openZoom(src, alt); });
+    i.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); i.click(); } });
+    return i;
+  }
+
+  function buildCard(lead) {
+    var card = el('div', 'card');
+    card.appendChild(el('div', 'lbl ok', 'PASST'));
+    card.appendChild(el('div', 'lbl no', 'PASST NICHT'));
+    var s = el('div', 'scroll');
+    card.appendChild(s);
+
+    var r = el('div', 'rank');
+    r.appendChild(el('span', '', '#' + lead.rank));
+    var d = st.dec[lead.rank];
+    if (d) r.appendChild(el('span', 'prev', 'Bisher: ' + LABEL[d.decision]));
+    s.appendChild(r);
+    s.appendChild(el('h2', '', lead.name || lead.domain));
+    s.appendChild(el('div', 'sub', lead.ort || ''));
+    if (lead.inhaber) s.appendChild(el('div', 'inh', 'Inhaber: ' + lead.inhaber));
+
+    var k = el('div', 'kpi');
+    function kpi(label, val) { var x = el('span', '', label + ' '); x.appendChild(el('b', '', val)); k.appendChild(x); }
+    kpi('Score', lead.score != null ? lead.score : '–');
+    kpi('Hässlichkeit', lead.gemini != null ? lead.gemini + '/10' : '–');
+    if (lead.judge && typeof lead.judge === 'object') {
+      Object.keys(lead.judge).forEach(function (key) {
+        if (key !== 'note' && lead.judge[key] != null) kpi(key.charAt(0).toUpperCase() + key.slice(1), lead.judge[key]);
+      });
+    }
+    s.appendChild(k);
+
+    if (lead.warn && lead.warn.length) {
+      var w = el('div', 'warn');
+      lead.warn.forEach(function (t, i) { w.appendChild(el('span', 'pill' + (i === 0 ? ' dark' : ''), '⚠ ' + t)); });
+      s.appendChild(w);
+    }
+
+    s.appendChild(img(lead.desktop, 'desk', 640, 400, 'Desktop-Screenshot ' + lead.domain));
+
+    var row = el('div', 'row');
+    row.appendChild(img(lead.mobile, 'mob', 300, 650, 'Mobil-Screenshot ' + lead.domain));
+    var info = el('div', 'info');
+    info.appendChild(el('p', 'grund', lead.grund || ''));
+    var extra = (lead.reasons || []).slice();
+    if (lead.judge && lead.judge.note) extra.push('Judge: ' + lead.judge.note);
+    if (extra.length || lead.grund) {
+      var ul = el('ul', 'ext');
+      extra.forEach(function (t) { ul.appendChild(el('li', '', t)); });
+      info.appendChild(ul);
+      var more = el('button', 'more', 'mehr ▾');
+      more.addEventListener('click', function () {
+        var o = info.classList.toggle('open');
+        more.textContent = o ? 'weniger ▴' : 'mehr ▾';
+      });
+      info.appendChild(more);
+    }
+    var a = el('a', 'link', 'Website öffnen ↗');
+    try { var u = new URL(lead.url); if (/^https?:$/.test(u.protocol)) a.href = u.href; } catch (e) { /* invalid website */ } a.target = '_blank'; a.rel = 'noopener noreferrer';
+    info.appendChild(el('br'));
+    info.appendChild(a);
+    info.appendChild(el('div', 'dom', lead.domain));
+    row.appendChild(info);
+    s.appendChild(row);
+    return card;
+  }
+
+  function render() {
+    stage.textContent = '';
+    updateHeader();
+    var done = st.idx < 0 || st.idx >= leads.length;
+    ['bNo', 'bOk', 'bUns'].forEach(function (id) { $(id).disabled = done; });
+    if (done) return renderDone();
+    // current + next 2 (in list order, skipping already decided ones)
+    var ids = [st.idx], j = st.idx;
+    while (ids.length < 3) {
+      j = nextOpen(j + 1);
+      if (j < 0 || ids.indexOf(j) >= 0) break;
+      ids.push(j);
+    }
+    for (var n = ids.length - 1; n >= 0; n--) {
+      var c = buildCard(leads[ids[n]]);
+      if (n > 0) { c.classList.add('back' + n); c.setAttribute('aria-hidden', 'true'); c.inert = true; }
+      else attachSwipe(c);
+      stage.appendChild(c);
+    }
+  }
+
+  function renderDone() {
+    var m = el('div', 'msg');
+    m.appendChild(el('h2', '', 'Fertig – alle ' + leads.length + ' Leads bewertet'));
+    m.appendChild(el('p', 'sub', countsText()));
+    var b = el('button', 'solid', 'Ergebnis senden');
+    b.addEventListener('click', openSend);
+    var o = el('button', 'plain', 'Übersicht');
+    o.addEventListener('click', openMenu);
+    m.appendChild(b); m.appendChild(o);
+    stage.appendChild(m);
+  }
+
+  function countsText() {
+    var c = { passt: 0, passt_nicht: 0, unsicher: 0 };
+    Object.keys(st.dec).forEach(function (r) { c[st.dec[r].decision]++; });
+    return '✓ ' + c.passt + '  ✗ ' + c.passt_nicht + (c.unsicher ? '  ? ' + c.unsicher : '');
+  }
+
+  function updateHeader() {
+    var n = decidedCount(), t = leads.length;
+    $('prog').textContent = n + ' / ' + t;
+    $('counts').textContent = countsText();
+    $('barFill').style.width = (t ? n / t * 100 : 0) + '%';
+    $('bUndo').disabled = !st.hist.length;
+  }
+
+  // ---------- decisions ----------
+  function decide(decision, chips, reason) {
+    var lead = leads[st.idx];
+    if (!lead) return;
+    st.hist.push({ rank: lead.rank, prev: st.dec[lead.rank] || null, idx: st.idx });
+    // Preserve every decision so undo remains multi-step after repeated edits.
+    st.dec[lead.rank] = {
+      rank: lead.rank, domain: lead.domain, name: lead.name, decision: decision,
+      chips: chips || [], reason: reason || '', ts: new Date().toISOString()
+    };
+    st.idx = nextOpen(st.idx + 1);
+    save();
+  }
+
+  function flyOut(dir, cb) {
+    var c = stage.querySelector('.card:last-child');
+    if (!c) return cb();
+    busy = true;
+    c.classList.add('anim');
+    c.style.transform = 'translateX(' + dir * 130 + '%) rotate(' + dir * 14 + 'deg)';
+    c.style.opacity = '0';
+    setTimeout(function () { busy = false; cb(); }, 220);
+  }
+  function snapBack(c) {
+    c.classList.add('anim');
+    c.style.transform = ''; c.style.opacity = '';
+    c.querySelectorAll('.lbl').forEach(function (l) { l.style.opacity = 0; });
+  }
+
+  function doPasst() {
+    if (busy || isOpen() || !leads[st.idx]) return;
+    flyOut(1, function () { decide('passt'); render(); });
+  }
+  function doUnsicher() {
+    if (busy || isOpen() || !leads[st.idx]) return;
+    flyOut(0, function () { decide('unsicher'); render(); });
+  }
+  function doNein() {
+    if (busy || isOpen() || !leads[st.idx]) return;
+    flyOut(-1, openWhy);
+  }
+
+  function undo() {
+    if (busy || isOpen()) return;
+    var h = st.hist.pop();
+    if (!h) return;
+    if (h.prev) st.dec[h.rank] = h.prev; else delete st.dec[h.rank];
+    st.idx = h.idx;
+    save(); render();
+    toast('Rückgängig: #' + h.rank);
+  }
+
+  // ---------- swipe ----------
+  function attachSwipe(card) {
+    var sx, sy, t0, dx = 0, drag = false, active = false, pid = null, moved = false;
+    var lOk = card.querySelector('.lbl.ok'), lNo = card.querySelector('.lbl.no');
+    card.addEventListener('pointerdown', function (e) {
+      if (busy || isOpen() || !e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      sx = e.clientX; sy = e.clientY; t0 = e.timeStamp; dx = 0; drag = false; active = true; moved = false; pid = e.pointerId;
+      card.classList.remove('anim');
+    });
+    card.addEventListener('pointermove', function (e) {
+      if (!active || e.pointerId !== pid) return;
+      var mx = e.clientX - sx, my = e.clientY - sy;
+      if (!drag) {
+        if (Math.abs(my) > 10 && Math.abs(my) > Math.abs(mx)) { active = false; return; }
+        if (Math.abs(mx) < 10 || Math.abs(mx) <= Math.abs(my)) return;
+        drag = true; moved = true;
+        try { card.setPointerCapture(pid); } catch (err) { /* noop */ }
+      }
+      dx = mx;
+      card.style.transform = 'translateX(' + dx + 'px) rotate(' + dx / 25 + 'deg)';
+      var p = Math.min(Math.abs(dx) / (card.offsetWidth * 0.3), 1);
+      lOk.style.opacity = dx > 0 ? p : 0;
+      lNo.style.opacity = dx < 0 ? p : 0;
+      e.preventDefault();
+    });
+    function end(e) {
+      if (!active || e.pointerId !== pid) return;
+      active = false;
+      if (!drag) return;
+      var v = Math.abs(dx) / Math.max(e.timeStamp - t0, 1);
+      var far = Math.abs(dx) > card.offsetWidth * 0.3 || (v > 0.6 && Math.abs(dx) > 50);
+      if (far && e.type === 'pointerup') { if (dx > 0) doPasst(); else doNein(); }
+      else snapBack(card);
+    }
+    card.addEventListener('pointerup', end);
+    card.addEventListener('pointercancel', end);
+    card.addEventListener('lostpointercapture', function (e) { if (e.target === card) end(e); });
+    // suppress clicks (image zoom, links) right after a drag
+    card.addEventListener('click', function (e) {
+      if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+    }, true);
+  }
+
+  // ---------- sheets ----------
+  var openSheet = null, returnFocus = null;
+  function fitSheet() {
+    if (!openSheet) return;
+    var v = window.visualViewport, sheet = $(openSheet);
+    sheet.style.bottom = v ? Math.max(0, innerHeight - v.height - v.offsetTop) + 'px' : '';
+    sheet.style.maxHeight = v ? Math.max(0, v.height - 16) + 'px' : '';
+  }
+  if (window.visualViewport) {
+    visualViewport.addEventListener('resize', fitSheet);
+    visualViewport.addEventListener('scroll', fitSheet);
+  }
+  function showSheet(id) {
+    if (busy) return;
+    if (!openSheet) returnFocus = document.activeElement;
+    if (openSheet) $(openSheet).classList.remove('show');
+    openSheet = id;
+    $(id).classList.add('show');
+    $('backdrop').classList.add('show');
+    $('app').inert = true;
+    $(id).setAttribute('aria-modal', 'true');
+    fitSheet();
+    $(id).querySelector('button').focus({preventScroll:true});
+  }
+  function hideSheet() {
+    if (!openSheet) return;
+    $(openSheet).classList.remove('show');
+    if (document.activeElement) document.activeElement.blur();
+    $('app').inert = false;
+    if (returnFocus && returnFocus.isConnected) returnFocus.focus({preventScroll:true});
+    $('backdrop').classList.remove('show');
+    openSheet = null;
+  }
+  function isOpen() { return !!openSheet || $('zoom').classList.contains('show'); }
+
+  // "Warum?" sheet
+  var sel = [];
+  CHIPS.forEach(function (c) {
+    var b = el('button', 'chip', c);
+    b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () {
+      var i = sel.indexOf(c);
+      if (i >= 0) sel.splice(i, 1); else sel.push(c);
+      b.classList.toggle('on', i < 0); b.setAttribute('aria-pressed', String(i < 0));
+      validateWhy();
+    });
+    $('chips').appendChild(b);
+  });
+  function validateWhy() { $('whySave').disabled = !(sel.length || $('reason').value.trim()); }
+  function openWhy() {
+    sel = [];
+    $('chips').querySelectorAll('.chip').forEach(function (b) { b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); });
+    $('reason').value = '';
+    validateWhy();
+    showSheet('whySheet');
+  }
+  function cancelWhy() {
+    hideSheet();
+    var c = stage.querySelector('.card:last-child');
+    if (c) snapBack(c);
+  }
+  $('reason').addEventListener('input', validateWhy);
+  $('whyCancel').addEventListener('click', cancelWhy);
+  $('whySave').addEventListener('click', function () {
+    if (openSheet !== 'whySheet' || !(sel.length || $('reason').value.trim())) return;
+    var chips = CHIPS.filter(function (c) { return sel.indexOf(c) >= 0; });
+    decide('passt_nicht', chips, $('reason').value.trim());
+    $('reason').blur();
+    hideSheet(); render();
+  });
+  $('backdrop').addEventListener('click', function () {
+    if (openSheet === 'whySheet') cancelWhy(); else hideSheet();
+  });
+
+  // menu
+  function openMenu() {
+    if (busy) return;
+    var ul = $('mList');
+    ul.textContent = '';
+    var ranks = Object.keys(st.dec).map(Number).sort(function (a, b) { return a - b; });
+    if (!ranks.length) ul.appendChild(el('li', 'sub', 'Noch keine Entscheidungen.'));
+    ranks.forEach(function (r) {
+      var d = st.dec[r];
+      var li = el('li');
+      li.appendChild(el('span', 'sub', '#' + r));
+      li.appendChild(el('span', 'n', d.name || d.domain));
+      li.appendChild(el('span', 'd ' + d.decision, LABEL[d.decision]));
+      li.tabIndex = 0; li.setAttribute('role', 'button');
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jumpTo(r); } });
+      li.title = [d.chips.join('; '), d.reason].filter(Boolean).join(' – ');
+      li.addEventListener('click', function () { jumpTo(r); });
+      ul.appendChild(li);
+    });
+    showSheet('menuSheet');
+  }
+  function jumpTo(rank) {
+    for (var i = 0; i < leads.length; i++) if (leads[i].rank === rank) { st.idx = i; break; }
+    save(); hideSheet(); render();
+  }
+  $('bMenu').addEventListener('click', openMenu);
+  $('mClose').addEventListener('click', hideSheet);
+  $('mSend').addEventListener('click', openSend);
+  $('mFirst').addEventListener('click', function () {
+    st.idx = nextOpen(0); save(); hideSheet(); render();
+    if (st.idx < 0) toast('Keine offenen Leads');
+  });
+  $('mReset').addEventListener('click', function () {
+    if (!confirm('Wirklich alle ' + decidedCount() + ' Entscheidungen löschen?')) return;
+    st = { idx: 0, dec: {}, hist: [] };
+    save(); hideSheet(); render();
+    toast('Zurückgesetzt');
+  });
+
+  // ---------- export ----------
+  function results() {
+    return Object.keys(st.dec).map(function (r) {
+      var d = st.dec[r];
+      return { rank: d.rank, domain: d.domain, name: d.name, decision: d.decision, chips: d.chips, reason: d.reason, ts: d.ts };
+    }).sort(function (a, b) { return a.rank - b.rank; });
+  }
+  function jsonText() {
+    var res = results();
+    return JSON.stringify({
+      version: 1, list: LIST, exported_at: new Date().toISOString(),
+      total: leads.length, decided: res.length, results: res
+    }, null, 2);
+  }
+  function compactText() {
+    var res = results();
+    var short = { passt: 'passt', passt_nicht: 'NEIN', unsicher: 'unsicher' };
+    var clean = function (s) { return String(s || '').replace(/[\r\n|]+/g, ' ').trim(); };
+    return ['LEADREVIEW v1 ' + today() + ' ' + res.length + '/' + leads.length].concat(res.map(function (d) {
+      return '#' + d.rank + ' ' + clean(d.domain) + ' | ' + short[d.decision] + ' | ' + clean(d.chips.join(';')) + ' | ' + clean(d.reason);
+    })).join('\n');
+  }
+  function fileName() { return 'lead-review-' + today() + '.json'; }
+
+  function openSend() {
+    if (busy) return;
+    $('sendInfo').textContent = decidedCount() + ' von ' + leads.length + ' Leads entschieden.';
+    $('sShare').hidden = !navigator.share;
+    showSheet('sendSheet');
+  }
+  $('bSend').addEventListener('click', openSend);
+  $('sClose').addEventListener('click', hideSheet);
+
+  $('sShare').addEventListener('click', function () {
+    var txt = jsonText(), data;
+    try {
+      var f = new File([txt], fileName(), { type: 'application/json' });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) data = { files: [f], title: 'Lead-Review Restaurants' };
+    } catch (e) { /* File constructor unsupported */ }
+    if (!data) data = { title: 'Lead-Review Restaurants', text: txt };
+    try { navigator.share(data).catch(function (e) {
+      if (e && e.name !== 'AbortError') toast('Teilen nicht möglich');
+    }); } catch (e) { toast('Teilen nicht möglich'); }
+  });
+
+  $('sCopy').addEventListener('click', function () {
+    var txt = jsonText();
+    function fallback() {
+      var ta = el('textarea');
+      ta.value = txt; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px';
+      var previous = document.activeElement;
+      $(openSheet || 'app').appendChild(ta);
+      ta.select(); ta.setSelectionRange(0, txt.length);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      if (previous && previous.isConnected) previous.focus({preventScroll:true});
+      toast(ok ? 'Kopiert' : 'Kopieren fehlgeschlagen');
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(txt).then(function () { toast('Kopiert'); }, fallback);
+    } else fallback();
+  });
+
+  $('sDown').addEventListener('click', function () {
+    var url = URL.createObjectURL(new Blob([jsonText()], { type: 'application/json' }));
+    var a = el('a');
+    a.href = url; a.download = fileName();
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  });
+
+  function tooLong(url) {
+    return url.length > MAX_URL &&
+      !confirm('Der Text ist sehr lang (' + url.length + ' Zeichen) und wird evtl. abgeschnitten. Besser „Teilen…“ oder „JSON kopieren“ nutzen.\n\nTrotzdem öffnen?');
+  }
+  $('sMail').addEventListener('click', function () {
+    var url = 'mailto:?subject=' + encodeURIComponent('Lead-Review Restaurants') + '&body=' + encodeURIComponent(compactText());
+    if (!tooLong(url)) location.href = url;
+  });
+  $('sWa').addEventListener('click', function () {
+    var url = 'https://wa.me/?text=' + encodeURIComponent(compactText());
+    if (!tooLong(url)) window.open(url, '_blank', 'noopener,noreferrer');
+  });
+
+  // ---------- zoom ----------
+  function openZoom(src, alt) {
+    var z = $('zoom');
+    z.textContent = '';
+    var i = el('img'); i.src = src; i.alt = alt;
+    z.setAttribute('role', 'dialog'); z.setAttribute('aria-modal', 'true'); z.setAttribute('aria-label', 'Screenshot – zum Schließen tippen');
+    z.tabIndex = 0; $('app').inert = true;
+    var close = el('button', '', 'Schließen'); close.style.color = '#fff'; close.style.borderColor = '#fff';
+    z.appendChild(close); z.appendChild(i);
+    z.classList.add('show'); z.focus();
+  }
+  function closeZoom() { $('zoom').classList.remove('show'); $('app').inert = false; $('bMenu').focus(); }
+  $('zoom').addEventListener('click', closeZoom);
+
+  // ---------- controls ----------
+  $('bOk').addEventListener('click', doPasst);
+  $('bNo').addEventListener('click', doNein);
+  $('bUns').addEventListener('click', doUnsicher);
+  $('bUndo').addEventListener('click', undo);
+
+  document.addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'TEXTAREA' || t.tagName === 'INPUT');
+    if (e.key === 'Escape') {
+      if ($('zoom').classList.contains('show')) closeZoom();
+      else if (openSheet === 'whySheet') cancelWhy();
+      else hideSheet();
+      return;
+    }
+    if (openSheet && e.key === 'Tab') {
+      var items = Array.from($(openSheet).querySelectorAll('button:not(:disabled), textarea, [tabindex="0"]'));
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      return;
+    }
+    if (typing || (t && t.isContentEditable) || e.metaKey || e.ctrlKey || e.altKey || isOpen()) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); doPasst(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); doNein(); }
+    else if (e.key === 'z' || e.key === 'Z' || e.key === 'Backspace') { e.preventDefault(); undo(); }
+  });
+
+  // ---------- init ----------
+  fetch('leads.json').then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function (data) {
+    if (!Array.isArray(data) || !data.length) throw new Error('leere Liste');
+    leads = data.slice().sort(function (a, b) { return a.rank - b.rank; });
+    load();
+    st.idx = nextOpen(0);
+    render();
+  }).catch(function (err) {
+    stage.textContent = '';
+    var m = el('div', 'msg');
+    m.appendChild(el('h2', '', 'Leads konnten nicht geladen werden'));
+    m.appendChild(el('p', 'sub', String(err && err.message || err)));
+    var b = el('button', '', 'Neu laden');
+    b.addEventListener('click', function () { location.reload(); });
+    m.appendChild(b);
+    stage.appendChild(m);
+    ['bNo', 'bOk', 'bUns'].forEach(function (id) { $(id).disabled = true; });
+  });
+})();
+</script>
+</body>
+</html>
